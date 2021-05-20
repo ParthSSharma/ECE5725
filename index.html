@@ -134,7 +134,17 @@
 					<li style="text-align: justify;">The ultrasonic data</li>
 				</ul>
 			  </ul>
-			  <p style="text-align: justify;padding: 0px 30px;">All these different data values are semi-colon (';') delimited and the values in the same data array are comma (',') delimited. All these data points are appended in a single string. The string is then encoded and sent over the TCP/IP socket. </p>
+			  <p style="text-align: justify;padding: 0px 30px;">All these different data values are semi-colon (";") delimited and the values in the same data array are comma (",") delimited. All these data points are appended in a single string. The string is then encoded and sent over the TCP/IP socket. After sending the data, the server then waits for the commands from the client in a blocking manner. Once a string is received, the server decodes the string and changes the functions as per the received command.</p>
+			  <div style="text-align:center;">
+				  <img class="img-rounded" src="pics/pythonFlow.png" alt="Generic placeholder image" style="width:100%;">
+				  <h5>The flow diagram for the Python program</h5>
+			  </div>
+			  <p style="text-align: justify;padding: 0px 30px;">The Android application works in a similar fashion. When the client starts, it searches for the server with given credentials. Once it is connected to the server, it waits for data to be received in a blocking manner. Once the data is received, the client decodes the data, splits it into IR camera feed and sensor values and updates the values on the screen. Once the screen has been updated, the client checks for button presses. If a button has been pressed, the client encodes the associated command and sends it over to the server. Otherwise, it encodes the stop command and send the command over to the said server.</p>
+			  <div style="text-align:center;">
+				  <img class="img-rounded" src="pics/javaFlow.png" alt="Generic placeholder image" style="width:100%;">
+				  <h5>The flow diagram for Android application</h5>
+			  </div>
+			  <p style="text-align: justify;padding: 0px 30px;">The biggest challenge with the said method was that </p>
       </div>
 
     <hr id='testing'>
