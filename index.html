@@ -117,7 +117,24 @@
 				<li style="text-align: justify;">The Python program running on the Raspberry Pi.</li>
 				<li style="text-align: justify;">The Android application running on the user device.</li>
 			  </ul>
-			  <p style="text-align: justify;padding: 0px 30px;">The main architecture of the software design is based on the fact that the Android app and the Python program communicate with each other over a TCP/IP server. The Python program creates a TCP/IP server and opens up a socket for communication. Once the socket is created, it listens and waits for clients to connect to it. </p>
+			  <p style="text-align: justify;padding: 0px 30px;">The main architecture of the software design is based on the fact that the Android app and the Python program communicate with each other over a TCP/IP server. The Python program creates a TCP/IP server and opens up a socket for communication. Once the socket is created, it listens and waits for clients to connect to it. Once a client is connected to the server, the main Python program starts executing. During each cycle of execution, the data packet that is sent consists of the following components:</p>
+			  <ul>
+				<li style="text-align: justify;">The IR camera feed:</li>
+				<ul>
+					<li style="text-align: justify;">The pixel array</li>
+					<li style="text-align: justify;">The bicubics array</li>
+					<li style="text-align: justify;">The colour array</li>
+				</ul>
+				<li style="text-align: justify;">The sensor values:</li>
+				<ul>
+					<li style="text-align: justify;">The water sensor data</li>
+					<li style="text-align: justify;">The fire sensor data</li>
+					<li style="text-align: justify;">The radiation sensor data</li>
+					<li style="text-align: justify;">The temperaure sensor data</li>
+					<li style="text-align: justify;">The ultrasonic data</li>
+				</ul>
+			  </ul>
+			  <p style="text-align: justify;padding: 0px 30px;">All these different data values are semi-colon (';') delimited and the values in the same data array are comma (',') delimited. All these data points are appended in a single string. The string is then encoded and sent over the TCP/IP socket. </p>
       </div>
 
     <hr id='testing'>
