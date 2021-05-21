@@ -223,13 +223,17 @@
               <h2>Testing</h2>
               <p style="text-align: justify;padding: 0px 30px;">In order to see how well the system works, we tested each and every component quite extensively. We carried out the following tests:</p>
 			  <ul>
-				<li style="text-align: justify;">User control test: As a first step towards testing, we turned the power on and started the program. Then we tested out all the motion control buttons and verified that all the buttons are functioning as they should.</li>
-				<li style="text-align: justify;">Ultrasonic test: Next, we began testing the ultrasonic sensor to test the accuracy in the measurement of distance. Moreover, as a security feature, we also tested if the robot stops moving forward when the distance between an obstacle and the robot is less than a certain threshold value (15 cms in this case).</li>
+				<li style="text-align: justify;">User control test: As a first step towards testing, we turned the power on and started the program. Then we tested out all the motion control buttons and verified that all the buttons are functioning as they should. We found out that there was a bit of latency bacause of large data packets being transmitted, but the robot was responding as it should.</li>
+				<li style="text-align: justify;">Ultrasonic test: Next, we began testing the ultrasonic sensor to test the accuracy in the measurement of distance. Moreover, as a security feature, we also tested if the robot stops moving forward when the distance between an obstacle and the robot is less than a certain threshold value (15 cms in this case). The test revealed that the distance is accurate within 1 cm for a range of 4 cm to 200 cm. The distance is unmeasurable below 4 cm and the accuracy falls rapidly beyond 200 cm. Moreover, the robot does stop automatically and does not move forward when the distance goes below the set threshold.</li>
 				<div style="text-align:center;">
 				  <img class="img-rounded" src="pics/distanceTest.png" alt="Generic placeholder image" style="width:70%;">
 				  <h5>Testing of the Ultrasonic Sensor</h5>
-			  </div>
-				<li style="text-align: justify;">LEFT: Pressing the LEFT button rotates the robot in the counter-clockwise direction.</li>
+				</div>
+				<li style="text-align: justify;">Flame test: The next sensor we tested was the flame sensor. In order to do so, we used a flint spark lighter and brought the flame close to the sensor. The main objective was to test how quickly the sensor reading changes in response to the flame and to figure out the maximum distance at which the flame is detected. The test revealed that the reading changes almost instantaneously in response to the flame. Also, the sensor is able to detect the lighter flame well over 1 meter when the flame is directly above the flame sensor. We also hypothesize that the distance will be even greater in case of larger flames. However, we did not have the required tools to safely test this out for larger flames.</li>
+				<div style="text-align:center;">
+				  <img class="img-rounded" src="pics/flameTest.png" alt="Generic placeholder image" style="width:70%;">
+				  <h5>Testing of the Flame Sensor</h5>
+				</div>
 				<li style="text-align: justify;">RIGHT: Pressing the RIGHT button rotates the robot in the clockwise direction.</li>
 				<li style="text-align: justify;">INC: Pressing the INC button increases the robot move speed.</li>
 				<li style="text-align: justify;">DEC: Pressing the DEC button reduces the robot move speed.</li>
