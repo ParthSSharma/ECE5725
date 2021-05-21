@@ -56,13 +56,15 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
 			<li><a href="#obj">Project Objective</a></li>
             <li><a href="#intro">Introduction</a></li>
             <li><a href="#harddesign">Hardware Design</a></li>
             <li><a href="#softdesign">Software Design</a></li>
             <li><a href="#testing">Testing</a></li>
             <li><a href="#result">Result</a></li>
+			<li><a href="#conclusion">Conclusion</a></li>
+			<li><a href="#future">Future Scope</a></li>
+			<li><a href="#budget">Budget</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -98,7 +100,7 @@
           <img class="img-rounded" src="pics/botImage.JPG" alt="Generic placeholder image" width="300" height="200">
           </div>
           <div style="text-align:center;">
-          <p style="text-align: justify;padding: 0px 30px;"> Building a Raspberry Pi 4 based system with the following functions</p>
+          <p style="text-align: justify;padding: 0px 30px;">Scouting Owl is a robot that allows the rescuers to detect and communicate with the survivor in an environment that is not yet suitable for in-person rescue. To perform the critical rescue task, we built a Raspberry Pi 4 based robot with the following functions:</p>
           <ul>
 			<li style="text-align: justify;">Establish a reliable half-duplex connection between the robot and the control device.</li>
 			<li style="text-align: justify;">Fetch and display live IR camera feed along with sensor data on the display device.</li>
@@ -269,6 +271,13 @@
 
       <div style="text-align:center;">
               <h2>Testing</h2>
+			  <p style="text-align: justify;padding: 0px 30px;">To ensure that we keep making progress, we strictly followed this checklist so that we could have a smooth workflow and systematic approach to the overall objective.</p>
+			  <div style="text-align:center;">
+				  <img class="img-rounded" src="pics/testingTable.png" alt="Generic placeholder image" style="width:100%;">
+			  </div>
+			  
+			  <br>
+			  
               <p style="text-align: justify;padding: 0px 30px;">In order to see how well the system works, we tested each and every component quite extensively. We carried out the following tests:</p>
 			  <ul>
 				<li style="text-align: justify;">User control test: As a first step towards testing, we turned the power on and started the program. Then we tested out all the motion control buttons and verified that all the buttons are functioning as they should. We found out that there was a bit of latency bacause of large data packets being transmitted, but the robot was responding as it should.</li>
@@ -307,6 +316,43 @@
               <h2>Result</h2>
               <p style="text-align: justify;padding: 0px 30px;">The project progressed mostly as we planned. We were able to implement all the sensors and features that we planned for. Moreover, we were also able to stay on track and save enough time to implement the mapping feature. We were able to develop the data packet structure to send data from server to client and get a response in return. Although there were a few hiccups like a few broken libraries and connection issues due to router blocking our TCP/IP packets, we were able to figure out the workarounds and stay on track in order to finish the project on time. We also managed to implement the mapping function which was very difficult to get right.</p>
       </div>
+	  
+	<hr id='conclusion'>
+
+      <div style="text-align:center;">
+              <h2>Conclusion</h2>
+              <p style="text-align: justify;padding: 0px 30px;">We are proud that all features are well integrated and the user experience is decent. The user can remotely control the robot with their phone over a Wi-Fi network. The Scouting Owl keeps streaming its surroundings with the IR camera and constantly updates sensor information that benefits the rescuer: temperature, water level, and flame. It can even generate a clear local map with only the ultrasonic sensor and can establish back and forth conversations with the rescuee. All the features mentioned are well integrated into the concise Android application. Overall, our project covers a wide range of topics and requires skill sets from computer science (Application development, TCP/IP communication), electrical engineering (sensors, embedded system programming), and mechanical engineering (CAD, 3D printing).</p>
+			  <p style="text-align: justify;padding: 0px 30px;">Despite accomplishments, we also learned a lot when getting stuck. We discovered that the communication between the Android device and the Raspberry Pi can not be established in a private Wi-Fi network. We found a lot of broken libraries when trying to integrate sensors which may suggest that a better solution may be using a microcontroller and establishing communication with it. Learning about the limitations and advantages of a Raspberry Pi will help us to make better design choices in future projects.</p>
+      </div>
+	
+	<hr id='future'>
+
+      <div style="text-align:center;">
+              <h2>Future Scope</h2>
+              <p style="text-align: justify;padding: 0px 30px;">Although Scouting Owl is in an amazing shape given that it is a month-long project, we can still elevate it in a lot of different ways:</p>
+			  <ul>
+				<li style="text-align: justify;">With the 8 channel ADC converter, we can include more analog sensors that tell us more information about the environment. For example, we can add photo-resistors, humidity sensor, and motion detector.</li>
+				<li style="text-align: justify;">As mentioned above, Raspberry Pi is not ideal for directly interfacing with sensors, so using a microcontroller as a data acquisition board and communicating sensor readings with the Pi may be a more optimal and professional solution.</li>
+				<li style="text-align: justify;">We can enhance mapping if we use a GPS or IMU to collect information and then use an Extended Kalman Filter to perform localization for the robot. In this way, we can create a much larger map. To map with higher precision, we can use the Intel real sense depth sensor that provides 9 depth measurement from 9 different angles at each time interval.</li>
+				<li style="text-align: justify;">We can also implement a feedback mechanism from the motors to have a measure of how much each motor has turned in order to have precise movements.</li>
+			  </ul>
+      </div>
+	
+	<hr id='budget'>
+	
+	  <div style="text-align:center;">
+              <h2>Budget</h2>
+			  <ul>
+				<li style="text-align: justify;">AMG8833 IR Thermal Camera: $26.99</li>
+				<li style="text-align: justify;">Mini USB Microphone: $5.95</li>
+				<li style="text-align: justify;">JBL Go Speaker: $10.00</li>
+				<li style="text-align: justify;">Water Level Sensor, Flame Sensor, Analog Temperature Sensor Ultrasonic: $10.00</li>
+				<li style="text-align: justify;">MCP3008: $3.75</li>
+				<li style="text-align: justify;">Raspberry Pi 4: $35.00</li>
+				<li style="text-align: justify;">Robot Kit: N/A</li>
+				<li style="text-align: justify;">Overall: $91.69</li>
+			  </ul>
+      </div>
 
     <hr>
 
@@ -318,33 +364,22 @@
           </div>
           <div class="col-md-6" style="font-size:16px">
               <img class="img-rounded" src="pics/a.png" alt="Generic placeholder image" width="240" height="240">
-              <h3>Rick</h3>
-              <p class="lead">netid@cornell.edu</p>
-              <p>Designed the overall software architecture (Just being himself).
+              <h3>Robby Huang</h3>
+              <p class="lead">lh479@cornell.edu</p>
+              <p>Handled hardware assembly, 3D printing and individual sensor testing and voice communication.
           </div>
           <div class="col-md-6" style="font-size:16px">
               <img class="img-rounded" src="pics/b.png" alt="Generic placeholder image" width="240" height="240">
-              <h3>Morty</h3>
-              <p class="lead">netid@cornell.edu</p>
-              <p>Tested the overall system.
+              <h3>Parth Sarthi Sharma</h3>
+              <p class="lead">pss242@cornell.edu</p>
+              <p>Handled TCP/IP communication, integration of sensors, motor control and android app development.
           </div>
       </div>
 
-    <hr>
-      <div style="font-size:18px">
-          <h2>Parts List</h2>
-          <ul>
-              <li>Raspberry Pi $35.00</li>
-              <li>Raspberry Pi Camera V2 $25.00</li>
-              <a href="https://www.adafruit.com/product/1463"><li>NeoPixel Ring - $9.95</li></a>
-              <li>LEDs, Resistors and Wires - Provided in lab</li>
-          </ul>
-          <h3>Total: $69.95</h3>
-      </div>
       <hr>
-      <div style="font-size:18px">
-          <h2>References</h2>
-          <a href="https://picamera.readthedocs.io/">PiCamera Document</a><br>
+      <div style="text-align:justify;">
+          <h2 style="text-align:center;">References</h2>
+          <a href="https://learn.adafruit.com/adafruit-amg8833-8x8-thermal-camera-sensor/raspberry-pi-thermal-camera">Thermal Camera Input</a><br>
           <a href="http://www.micropik.com/PDF/SG90Servo.pdf">Tower Pro Servo Datasheet</a><br>
           <a href="http://getbootstrap.com/">Bootstrap</a><br>
           <a href="http://abyz.co.uk/rpi/pigpio/">Pigpio Library</a><br>
