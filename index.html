@@ -56,15 +56,16 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-			<li><a href="#obj">Project Objective</a></li>
+			<li><a href="#obj">Objective</a></li>
             <li><a href="#intro">Introduction</a></li>
-            <li><a href="#harddesign">Hardware Design</a></li>
-            <li><a href="#softdesign">Software Design</a></li>
+            <li><a href="#harddesign">Hardware</a></li>
+            <li><a href="#softdesign">Software</a></li>
             <li><a href="#testing">Testing</a></li>
             <li><a href="#result">Result</a></li>
 			<li><a href="#conclusion">Conclusion</a></li>
 			<li><a href="#future">Future Scope</a></li>
 			<li><a href="#budget">Budget</a></li>
+			<li><a href="#code">Code</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -379,24 +380,627 @@
       <hr>
       <div style="text-align:justify;">
           <h2 style="text-align:center;">References</h2>
+		  <a href="https://android.processing.org/">Processing (Software used for Android app development)</a><br>
           <a href="https://learn.adafruit.com/adafruit-amg8833-8x8-thermal-camera-sensor/raspberry-pi-thermal-camera">Thermal Camera Input</a><br>
-          <a href="http://www.micropik.com/PDF/SG90Servo.pdf">Tower Pro Servo Datasheet</a><br>
-          <a href="http://getbootstrap.com/">Bootstrap</a><br>
-          <a href="http://abyz.co.uk/rpi/pigpio/">Pigpio Library</a><br>
-          <a href="https://sourceforge.net/p/raspberry-gpio-python/wiki/Home/">R-Pi GPIO Document</a><br>
+          <a href="https://tutorials-raspberrypi.com/raspberry-pi-ultrasonic-sensor-hc-sr04/">Ultrasonic Sensor</a><br>
+          <a href="https://learn.adafruit.com/usb-audio-cards-with-a-raspberry-pi/recording-audio">Audio Input</a><br>
+          <a href="https://cdn-shop.adafruit.com/datasheets/MCP3008.pdf">ADC/SPI</a><br>
+		  <a href="https://www.raspberrypi.org/documentation/hardware/raspberrypi/spi/README.md">ADC/SPI</a><br>
+		  <a href="https://raspberrypi-aa.github.io/session3/spi.html">ADC/SPI</a><br>
+          <a href="https://learn.sparkfun.com/tutorials/python-programming-tutorial-getting-started-with-the-raspberry-pi/experiment-2-play-sounds">Audio Output</a><br>
 
       </div>
 
-    <hr>
+    <hr id='code'>
 
       <div class="row">
-              <h2>Code Appendix</h2>
-              <pre><code>
-// Hello World.c
-int main(){
-  printf("Hello World.\n");
-}
-              </code></pre>
+              <h2 style="text-align:center;">Code Appendix</h2>
+			  <h5 style="text-align:justify;">RobotRun.py</h5>
+              <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #888888">#Include all the libraries</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">RPi.GPIO</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">GPIO</span> <span style="color: #888888">#The GPIO library</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">time</span> <span style="color: #888888">#The time library</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">sys</span> <span style="color: #888888">#The sys library</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">os</span> <span style="color: #888888">#The os library</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">pygame</span> <span style="color: #888888">#The pygame library</span>
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">math</span> <span style="color: #008800; font-weight: bold">import</span> <span style="color: #333333">*</span> <span style="color: #888888">#The math library</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">numpy</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">np</span> <span style="color: #888888">#The numpy library</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">busio</span> <span style="color: #888888">#The bus input output library</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">board</span> <span style="color: #888888">#The board library</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">socket</span> <span style="color: #888888">#The TCP IP socket library</span>
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">scipy.interpolate</span> <span style="color: #008800; font-weight: bold">import</span> griddata <span style="color: #888888">#The scipy library</span>
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">colour</span> <span style="color: #008800; font-weight: bold">import</span> Color <span style="color: #888888">#The colour library</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">adafruit_amg88xx</span> <span style="color: #888888">#The adafruit library for IR camera</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">matplotlib.pyplot</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">plt</span> <span style="color: #888888">#The matplotlib library</span>
+
+pygame<span style="color: #333333">.</span>mixer<span style="color: #333333">.</span>init() <span style="color: #888888">#Pygame mixer initialization for sounds</span>
+GPIO<span style="color: #333333">.</span>setmode(GPIO<span style="color: #333333">.</span>BCM) <span style="color: #888888">#Set BCM for GPIO</span>
+
+motor1PWMPin <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">26</span> <span style="color: #888888">#PWM Pin for motor 1</span>
+motor1Pin1 <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">5</span> <span style="color: #888888">#Pin 1 for motor 1</span>
+motor1Pin2 <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">6</span> <span style="color: #888888">#Pin 2 for motor 1</span>
+motor2PWMPin <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">16</span> <span style="color: #888888">#PWM Pin for motor 2</span>
+motor2Pin1 <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">20</span> <span style="color: #888888">#Pin 1 for motor 2</span>
+motor2Pin2 <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">21</span> <span style="color: #888888">#Pin 2 for motor 2</span>
+
+freq <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">50</span> <span style="color: #888888">#Set PWM frequency to 50 Hz</span>
+dutyCycle <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">50</span> <span style="color: #888888">#Set default duty cycle to 50%</span>
+
+CLK <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">11</span> <span style="color: #888888">#Clock pin for SPI</span>
+MISO <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">9</span> <span style="color: #888888">#MISO pin for SPI</span>
+MOSI <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">10</span> <span style="color: #888888">#MOSI pin for SPI</span>
+CS <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">17</span> <span style="color: #888888">#Chip Select pin for SPI</span>
+
+GPIO_TRIGGER <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">18</span> <span style="color: #888888">#Trigger pin for ultrasonic</span>
+GPIO_ECHO <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">24</span> <span style="color: #888888">#Echo pin for ultrasonic</span>
+GPIO_WATERLEVEL <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">22</span> <span style="color: #888888">#Pin for water level sensor</span>
+GPIO_FLAME <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">13</span> <span style="color: #888888">#Pin for flame level sensor</span>
+GPIO_ANTENNA <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">27</span> <span style="color: #888888">#Pin for sensing radiation</span>
+
+GPIO<span style="color: #333333">.</span>setup(motor1PWMPin, GPIO<span style="color: #333333">.</span>OUT) <span style="color: #888888">#Setup motor 1 PWM pin as output</span>
+GPIO<span style="color: #333333">.</span>setup(motor1Pin1, GPIO<span style="color: #333333">.</span>OUT) <span style="color: #888888">#Setup motor 1 pin 1 as output</span>
+GPIO<span style="color: #333333">.</span>setup(motor1Pin2, GPIO<span style="color: #333333">.</span>OUT) <span style="color: #888888">#Setup motor 1 pin 2 as output</span>
+GPIO<span style="color: #333333">.</span>setup(motor2PWMPin, GPIO<span style="color: #333333">.</span>OUT) <span style="color: #888888">#Setup motor 2 PWM pin as output</span>
+GPIO<span style="color: #333333">.</span>setup(motor2Pin1, GPIO<span style="color: #333333">.</span>OUT) <span style="color: #888888">#Setup motor 2 pin 1 as output</span>
+GPIO<span style="color: #333333">.</span>setup(motor2Pin2, GPIO<span style="color: #333333">.</span>OUT) <span style="color: #888888">#Setup motor 2 pin 2 as output</span>
+GPIO<span style="color: #333333">.</span>output(motor1Pin1, GPIO<span style="color: #333333">.</span>LOW) <span style="color: #888888">#Set motor 1 pin 1 to be low</span>
+GPIO<span style="color: #333333">.</span>output(motor1Pin2, GPIO<span style="color: #333333">.</span>LOW) <span style="color: #888888">#Set motor 1 pin 2 to be low</span>
+GPIO<span style="color: #333333">.</span>output(motor2Pin1, GPIO<span style="color: #333333">.</span>LOW) <span style="color: #888888">#Set motor 2 pin 1 to be low</span>
+GPIO<span style="color: #333333">.</span>output(motor2Pin2, GPIO<span style="color: #333333">.</span>LOW) <span style="color: #888888">#Set motor 2 pin 2 to be low</span>
+motor1PWM <span style="color: #333333">=</span> GPIO<span style="color: #333333">.</span>PWM(motor1PWMPin, freq) <span style="color: #888888">#Initialize motor 1 PWM pin</span>
+motor2PWM <span style="color: #333333">=</span> GPIO<span style="color: #333333">.</span>PWM(motor2PWMPin, freq) <span style="color: #888888">#Initialize motor 2 PWM pin</span>
+motor1PWM<span style="color: #333333">.</span>start(dutyCycle) <span style="color: #888888">#Start motor 1 PWM with the given duty cycle</span>
+motor2PWM<span style="color: #333333">.</span>start(dutyCycle) <span style="color: #888888">#Start motor 2 PWM with the given duty cycle</span>
+
+GPIO<span style="color: #333333">.</span>setup(GPIO_TRIGGER, GPIO<span style="color: #333333">.</span>OUT) <span style="color: #888888">#Setup trigger pin as output</span>
+GPIO<span style="color: #333333">.</span>setup(GPIO_ECHO, GPIO<span style="color: #333333">.</span>IN) <span style="color: #888888">#Setup echo pin as input</span>
+GPIO<span style="color: #333333">.</span>setup(GPIO_WATERLEVEL, GPIO<span style="color: #333333">.</span>IN, pull_up_down <span style="color: #333333">=</span> GPIO<span style="color: #333333">.</span>PUD_DOWN) <span style="color: #888888">#Setup water level sensor pin as pulled down input</span>
+GPIO<span style="color: #333333">.</span>setup(GPIO_FLAME, GPIO<span style="color: #333333">.</span>IN, pull_up_down <span style="color: #333333">=</span> GPIO<span style="color: #333333">.</span>PUD_DOWN) <span style="color: #888888">#Setup flame sensor pin as pulled down input</span>
+GPIO<span style="color: #333333">.</span>setup(GPIO_ANTENNA, GPIO<span style="color: #333333">.</span>IN, pull_up_down <span style="color: #333333">=</span> GPIO<span style="color: #333333">.</span>PUD_DOWN) <span style="color: #888888">#Setup radiation sensor pin as pulled down input</span>
+
+fireVar <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;No Fire&quot;</span> <span style="color: #888888">#Value for fire data to be sent</span>
+waterVar <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;No Water&quot;</span> <span style="color: #888888">#Value for water data to be sent</span>
+radiationVar <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;No Radiation&quot;</span> <span style="color: #888888">#Value for radiation data to be sent</span>
+
+MINTEMP <span style="color: #333333">=</span> <span style="color: #6600EE; font-weight: bold">26.0</span> <span style="color: #888888">#Minimum temperature to be detected</span>
+MAXTEMP <span style="color: #333333">=</span> <span style="color: #6600EE; font-weight: bold">32.0</span> <span style="color: #888888">#Maximum temperature to be detected</span>
+COLORDEPTH <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">1024</span> <span style="color: #888888">#Colour depth to be 1024</span>
+
+distVar <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">50</span> <span style="color: #888888">#Value for distance sensor</span>
+tempVar <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">25</span> <span style="color: #888888">#Temperature data to be sent</span>
+distToStop <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">15</span> <span style="color: #888888">#Distance threshold for the robot to stop</span>
+
+command <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;STOP&quot;</span> <span style="color: #888888">#The command to control robot</span>
+prevCommand <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;STOP&quot;</span> <span style="color: #888888">#The last received command</span>
+
+<span style="color: #888888">#Constraint function to limit the value</span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">constrain</span>(val, min_val, max_val):
+    <span style="color: #008800; font-weight: bold">return</span> <span style="color: #007020">min</span>(max_val, <span style="color: #007020">max</span>(min_val, val))
+
+<span style="color: #888888">#Function to fetch the distance from the ultrasonic sensor</span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">distance</span>():
+    GPIO<span style="color: #333333">.</span>output(GPIO_TRIGGER, <span style="color: #008800; font-weight: bold">True</span>)
+    time<span style="color: #333333">.</span>sleep(<span style="color: #6600EE; font-weight: bold">0.00001</span>)
+    GPIO<span style="color: #333333">.</span>output(GPIO_TRIGGER, <span style="color: #008800; font-weight: bold">False</span>)
+    
+    StartTime <span style="color: #333333">=</span> time<span style="color: #333333">.</span>time()
+    StopTime <span style="color: #333333">=</span> time<span style="color: #333333">.</span>time()
+    
+    <span style="color: #008800; font-weight: bold">while</span> GPIO<span style="color: #333333">.</span>input(GPIO_ECHO) <span style="color: #333333">==</span> <span style="color: #0000DD; font-weight: bold">0</span>:
+        StartTime <span style="color: #333333">=</span> time<span style="color: #333333">.</span>time()
+ 
+    <span style="color: #008800; font-weight: bold">while</span> GPIO<span style="color: #333333">.</span>input(GPIO_ECHO) <span style="color: #333333">==</span> <span style="color: #0000DD; font-weight: bold">1</span>:
+        StopTime <span style="color: #333333">=</span> time<span style="color: #333333">.</span>time()
+ 
+
+    TimeElapsed <span style="color: #333333">=</span> StopTime <span style="color: #333333">-</span> StartTime
+    distance <span style="color: #333333">=</span> (TimeElapsed <span style="color: #333333">*</span> <span style="color: #0000DD; font-weight: bold">34300</span>) <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span>
+    <span style="color: #008800; font-weight: bold">return</span> distance
+
+<span style="color: #888888">#Function to convert robot coordinates to global coordinates</span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">robot2global</span>(pose, xyR):
+    theta <span style="color: #333333">=</span> pose[<span style="color: #0000DD; font-weight: bold">2</span>]
+    Trg <span style="color: #333333">=</span> [[cos(theta), <span style="color: #333333">-</span>sin(theta), pose[<span style="color: #0000DD; font-weight: bold">0</span>]],
+           [sin(theta), cos(theta), pose[<span style="color: #0000DD; font-weight: bold">1</span>]],
+           [<span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">1</span>]]
+    Trg <span style="color: #333333">=</span> np<span style="color: #333333">.</span>array(Trg)
+    xyR<span style="color: #333333">.</span>append(<span style="color: #0000DD; font-weight: bold">1</span>)
+    xyR <span style="color: #333333">=</span> np<span style="color: #333333">.</span>array(xyR)
+    xyG <span style="color: #333333">=</span> np<span style="color: #333333">.</span>matmul(Trg, xyR<span style="color: #333333">.</span>transpose())
+    xyG <span style="color: #333333">=</span> xyG[<span style="color: #0000DD; font-weight: bold">0</span>:<span style="color: #0000DD; font-weight: bold">2</span>]
+    <span style="color: #008800; font-weight: bold">return</span> xyG
+
+<span style="color: #888888">#The mapping function</span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">startMap</span>():
+    <span style="color: #008800; font-weight: bold">global</span> dutyCycle, motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, motor1PWM, motor2PWM
+    
+    <span style="color: #888888">#Change the duty cycle to 100%</span>
+    motor1PWM<span style="color: #333333">.</span>ChangeDutyCycle(<span style="color: #0000DD; font-weight: bold">100</span>)
+    motor2PWM<span style="color: #333333">.</span>ChangeDutyCycle(<span style="color: #0000DD; font-weight: bold">100</span>)
+    
+    distArray <span style="color: #333333">=</span> []
+    sensorOrigin <span style="color: #333333">=</span> [<span style="color: #6600EE; font-weight: bold">10.8</span>, <span style="color: #0000DD; font-weight: bold">0</span>]
+    numPt <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">200</span> <span style="color: #888888">#Number of points to be plotted</span>
+    theta <span style="color: #333333">=</span> np<span style="color: #333333">.</span>linspace(<span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">2</span> <span style="color: #333333">*</span> pi, numPt)
+    
+    <span style="color: #888888">#Fetch the distance for all the points</span>
+    <span style="color: #008800; font-weight: bold">for</span> i <span style="color: #000000; font-weight: bold">in</span> <span style="color: #007020">range</span>(<span style="color: #0000DD; font-weight: bold">0</span>, numPt):
+        GPIO<span style="color: #333333">.</span>output(motor1Pin1, GPIO<span style="color: #333333">.</span>HIGH)
+        GPIO<span style="color: #333333">.</span>output(motor1Pin2, GPIO<span style="color: #333333">.</span>LOW)
+        GPIO<span style="color: #333333">.</span>output(motor2Pin1, GPIO<span style="color: #333333">.</span>HIGH)
+        GPIO<span style="color: #333333">.</span>output(motor2Pin2, GPIO<span style="color: #333333">.</span>LOW)
+        time<span style="color: #333333">.</span>sleep(<span style="color: #6600EE; font-weight: bold">0.01</span>)
+        GPIO<span style="color: #333333">.</span>output(motor1Pin1,GPIO<span style="color: #333333">.</span>LOW)
+        GPIO<span style="color: #333333">.</span>output(motor1Pin2,GPIO<span style="color: #333333">.</span>LOW)
+        GPIO<span style="color: #333333">.</span>output(motor2Pin1,GPIO<span style="color: #333333">.</span>LOW)
+        GPIO<span style="color: #333333">.</span>output(motor2Pin2,GPIO<span style="color: #333333">.</span>LOW)
+        time<span style="color: #333333">.</span>sleep(<span style="color: #6600EE; font-weight: bold">0.1</span>)
+        distArray<span style="color: #333333">.</span>append(distance())
+    xVal <span style="color: #333333">=</span> []
+    yVal <span style="color: #333333">=</span> []
+    <span style="color: #008800; font-weight: bold">for</span> i <span style="color: #000000; font-weight: bold">in</span> <span style="color: #007020">range</span>(<span style="color: #0000DD; font-weight: bold">0</span>, numPt):
+        dpy <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+        dpx <span style="color: #333333">=</span> distArray[i] <span style="color: #333333">+</span> sensorOrigin[<span style="color: #0000DD; font-weight: bold">0</span>]
+        depthPtG <span style="color: #333333">=</span> robot2global([<span style="color: #0000DD; font-weight: bold">0</span>,<span style="color: #0000DD; font-weight: bold">0</span>,theta[i]], [dpx, dpy])
+        xVal<span style="color: #333333">.</span>append(depthPtG[<span style="color: #0000DD; font-weight: bold">0</span>])
+        yVal<span style="color: #333333">.</span>append(depthPtG[<span style="color: #0000DD; font-weight: bold">1</span>])
+    plt<span style="color: #333333">.</span>plot(<span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">0</span>, <span style="background-color: #fff0f0">&#39;r+&#39;</span>) <span style="color: #888888">#Plot the bot as a red +</span>
+    plt<span style="color: #333333">.</span>plot(xVal, yVal, <span style="background-color: #fff0f0">&#39;bo&#39;</span>) <span style="color: #888888">#Plot the distances as blue circles</span>
+    plt<span style="color: #333333">.</span>show() <span style="color: #888888">#Show the plot</span>
+    <span style="color: #888888">#Change the duty cycle back</span>
+    motor1PWM<span style="color: #333333">.</span>ChangeDutyCycle(dutyCycle)
+    motor2PWM<span style="color: #333333">.</span>ChangeDutyCycle(dutyCycle)
+
+<span style="color: #888888">#Function to map a value in a given range</span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">map_value</span>(x, in_min, in_max, out_min, out_max):
+    <span style="color: #008800; font-weight: bold">return</span> (x <span style="color: #333333">-</span> in_min) <span style="color: #333333">*</span> (out_max <span style="color: #333333">-</span> out_min) <span style="color: #333333">/</span> (in_max <span style="color: #333333">-</span> in_min) <span style="color: #333333">+</span> out_min
+
+<span style="color: #888888">#Setup the SPI pins</span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">setupSpiPins</span>(clkPin, misoPin, mosiPin, csPin):
+    GPIO<span style="color: #333333">.</span>setup(clkPin, GPIO<span style="color: #333333">.</span>OUT)
+    GPIO<span style="color: #333333">.</span>setup(misoPin, GPIO<span style="color: #333333">.</span>IN)
+    GPIO<span style="color: #333333">.</span>setup(mosiPin, GPIO<span style="color: #333333">.</span>OUT)
+    GPIO<span style="color: #333333">.</span>setup(csPin, GPIO<span style="color: #333333">.</span>OUT)
+     
+<span style="color: #888888">#Read the ADC values using SPI</span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">readAdc</span>(channel, clkPin, misoPin, mosiPin, csPin):
+    <span style="color: #008800; font-weight: bold">if</span> (channel <span style="color: #333333">&lt;</span> <span style="color: #0000DD; font-weight: bold">0</span>) <span style="color: #000000; font-weight: bold">or</span> (channel <span style="color: #333333">&gt;</span> <span style="color: #0000DD; font-weight: bold">7</span>):
+        <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;Invalid ADC Channel number, must be between [0,7]&quot;</span>)
+        <span style="color: #008800; font-weight: bold">return</span> <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span>
+        
+    GPIO<span style="color: #333333">.</span>output(csPin, GPIO<span style="color: #333333">.</span>HIGH)
+    GPIO<span style="color: #333333">.</span>output(csPin, GPIO<span style="color: #333333">.</span>LOW)
+    GPIO<span style="color: #333333">.</span>output(clkPin, GPIO<span style="color: #333333">.</span>HIGH)
+    read_command <span style="color: #333333">=</span> <span style="color: #005588; font-weight: bold">0x18</span>
+    read_command <span style="color: #333333">|=</span> channel
+    
+    sendBits(read_command, <span style="color: #0000DD; font-weight: bold">5</span>, clkPin, mosiPin)
+    
+    adcValue <span style="color: #333333">=</span> recvBits(<span style="color: #0000DD; font-weight: bold">12</span>, clkPin, misoPin)
+    GPIO<span style="color: #333333">.</span>output(csPin, GPIO<span style="color: #333333">.</span>HIGH)
+    <span style="color: #008800; font-weight: bold">return</span> adcValue
+
+<span style="color: #888888">#Send the bits    </span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">sendBits</span>(data, numBits, clkPin, mosiPin):
+    data <span style="color: #333333">&lt;&lt;=</span> (<span style="color: #0000DD; font-weight: bold">8</span> <span style="color: #333333">-</span> numBits)
+    
+    <span style="color: #008800; font-weight: bold">for</span> bit <span style="color: #000000; font-weight: bold">in</span> <span style="color: #007020">range</span>(numBits):
+        <span style="color: #008800; font-weight: bold">if</span> data <span style="color: #333333">&amp;</span> <span style="color: #005588; font-weight: bold">0x80</span>:
+            GPIO<span style="color: #333333">.</span>output(mosiPin, GPIO<span style="color: #333333">.</span>HIGH)
+        <span style="color: #008800; font-weight: bold">else</span>:
+            GPIO<span style="color: #333333">.</span>output(mosiPin, GPIO<span style="color: #333333">.</span>LOW)
+        data <span style="color: #333333">&lt;&lt;=</span> <span style="color: #0000DD; font-weight: bold">1</span>
+        
+        GPIO<span style="color: #333333">.</span>output(clkPin, GPIO<span style="color: #333333">.</span>HIGH)
+        GPIO<span style="color: #333333">.</span>output(clkPin, GPIO<span style="color: #333333">.</span>LOW)
+
+<span style="color: #888888">#Receive the data bits</span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">recvBits</span>(numBits, clkPin, misoPin):
+    retVal <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+    
+    <span style="color: #008800; font-weight: bold">for</span> bit <span style="color: #000000; font-weight: bold">in</span> <span style="color: #007020">range</span>(numBits):
+        GPIO<span style="color: #333333">.</span>output(clkPin, GPIO<span style="color: #333333">.</span>HIGH)
+        GPIO<span style="color: #333333">.</span>output(clkPin, GPIO<span style="color: #333333">.</span>LOW)
+        <span style="color: #008800; font-weight: bold">if</span> GPIO<span style="color: #333333">.</span>input(misoPin):
+            retVal <span style="color: #333333">|=</span> <span style="color: #005588; font-weight: bold">0x1</span>
+        
+        retVal <span style="color: #333333">&lt;&lt;=</span> <span style="color: #0000DD; font-weight: bold">1</span>
+    
+    <span style="color: #008800; font-weight: bold">return</span> (retVal<span style="color: #333333">/</span><span style="color: #0000DD; font-weight: bold">2</span>)
+
+<span style="color: #888888">#Callback function for water level sensor</span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">trigWater</span>(channel):
+    <span style="color: #008800; font-weight: bold">global</span> waterVar
+    <span style="color: #008800; font-weight: bold">if</span>(waterVar <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&quot;Water&quot;</span>):
+        waterVar <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;No Water&quot;</span>
+    <span style="color: #008800; font-weight: bold">else</span>:
+        waterVar <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;Water&quot;</span>
+
+<span style="color: #888888">#Callback function for fire sensor    </span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">trigFire</span>(channel):
+    <span style="color: #008800; font-weight: bold">global</span> fireVar
+    <span style="color: #008800; font-weight: bold">if</span>(fireVar <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&quot;Fire&quot;</span>):
+        fireVar <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;No Fire&quot;</span>
+    <span style="color: #008800; font-weight: bold">else</span>:
+        fireVar <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;Fire&quot;</span>
+
+<span style="color: #888888">#Callback function for radiation sensor</span>
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">trigRadiation</span>(channel):
+    <span style="color: #008800; font-weight: bold">global</span> radiationVar, fireVar, waterVar
+    radiationVar <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;Radiation&quot;</span>
+    <span style="color: #008800; font-weight: bold">if</span>(fireVar <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&quot;Fire&quot;</span>):
+        fireVar <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;No Fire&quot;</span>
+    <span style="color: #008800; font-weight: bold">else</span>:
+        fireVar <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;Fire&quot;</span>
+    <span style="color: #008800; font-weight: bold">if</span>(waterVar <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&quot;Water&quot;</span>):
+        waterVar <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;No Water&quot;</span>
+    <span style="color: #008800; font-weight: bold">else</span>:
+        waterVar <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;Water&quot;</span>
+
+i2c_bus <span style="color: #333333">=</span> busio<span style="color: #333333">.</span>I2C(board<span style="color: #333333">.</span>SCL, board<span style="color: #333333">.</span>SDA) <span style="color: #888888">#Setup the I2C bus</span>
+sensor <span style="color: #333333">=</span> adafruit_amg88xx<span style="color: #333333">.</span>AMG88XX(i2c_bus) <span style="color: #888888">#Setup the IR sensor using I2C</span>
+
+points <span style="color: #333333">=</span> [(floor(ix <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">8</span>), (ix <span style="color: #333333">%</span> <span style="color: #0000DD; font-weight: bold">8</span>)) <span style="color: #008800; font-weight: bold">for</span> ix <span style="color: #000000; font-weight: bold">in</span> <span style="color: #007020">range</span>(<span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">64</span>)] <span style="color: #888888">#Points for the IR sensor</span>
+grid_x, grid_y <span style="color: #333333">=</span> np<span style="color: #333333">.</span>mgrid[<span style="color: #0000DD; font-weight: bold">0</span>:<span style="color: #0000DD; font-weight: bold">7</span>:<span style="color: #0000DD; font-weight: bold">32</span>j, <span style="color: #0000DD; font-weight: bold">0</span>:<span style="color: #0000DD; font-weight: bold">7</span>:<span style="color: #0000DD; font-weight: bold">32</span>j] <span style="color: #888888">#Create the grid</span>
+
+blue <span style="color: #333333">=</span> Color(<span style="background-color: #fff0f0">&quot;indigo&quot;</span>) <span style="color: #888888">#The colour blue</span>
+colors <span style="color: #333333">=</span> <span style="color: #007020">list</span>(blue<span style="color: #333333">.</span>range_to(Color(<span style="background-color: #fff0f0">&quot;red&quot;</span>), COLORDEPTH)) <span style="color: #888888">#The colours list</span>
+colors <span style="color: #333333">=</span> [(<span style="color: #007020">int</span>(c<span style="color: #333333">.</span>red <span style="color: #333333">*</span> <span style="color: #0000DD; font-weight: bold">255</span>), <span style="color: #007020">int</span>(c<span style="color: #333333">.</span>green <span style="color: #333333">*</span> <span style="color: #0000DD; font-weight: bold">255</span>), <span style="color: #007020">int</span>(c<span style="color: #333333">.</span>blue <span style="color: #333333">*</span> <span style="color: #0000DD; font-weight: bold">255</span>)) <span style="color: #008800; font-weight: bold">for</span> c <span style="color: #000000; font-weight: bold">in</span> colors]
+
+time<span style="color: #333333">.</span>sleep(<span style="color: #6600EE; font-weight: bold">0.1</span>) <span style="color: #888888">#Do not remove. Lets sensor initialize</span>
+
+GPIO<span style="color: #333333">.</span>add_event_detect(GPIO_WATERLEVEL, GPIO<span style="color: #333333">.</span>BOTH, callback <span style="color: #333333">=</span> trigWater, bouncetime <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">300</span>) <span style="color: #888888">#The event detection for water level sensor</span>
+GPIO<span style="color: #333333">.</span>add_event_detect(GPIO_FLAME, GPIO<span style="color: #333333">.</span>BOTH, callback <span style="color: #333333">=</span> trigFire, bouncetime <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">300</span>) <span style="color: #888888">#The event detection for fire sensor</span>
+GPIO<span style="color: #333333">.</span>add_event_detect(GPIO_ANTENNA, GPIO<span style="color: #333333">.</span>BOTH, callback <span style="color: #333333">=</span> trigRadiation, bouncetime <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">300</span>) <span style="color: #888888">#The event detection for radiation detection sensor</span>
+
+timeStamp <span style="color: #333333">=</span> time<span style="color: #333333">.</span>time() <span style="color: #888888">#The start time flag</span>
+
+<span style="color: #008800; font-weight: bold">if</span> __name__ <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&#39;__main__&#39;</span>:
+    <span style="color: #008800; font-weight: bold">try</span>:
+        setupSpiPins(CLK, MISO, MOSI, CS) <span style="color: #888888">#Call the SPI setup function</span>
+        HOST <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&#39;10.49.32.252&#39;</span> <span style="color: #888888">#The server IP address (RaspberryPi in this case)</span>
+        PORT <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">8000</span> <span style="color: #888888">#The port for the socket</span>
+        <span style="color: #007020">print</span>(socket<span style="color: #333333">.</span>gethostname()) <span style="color: #888888">#Print the hostname</span>
+        s <span style="color: #333333">=</span> socket<span style="color: #333333">.</span>socket(socket<span style="color: #333333">.</span>AF_INET, socket<span style="color: #333333">.</span>SOCK_STREAM) <span style="color: #888888">#Start the socket</span>
+        s<span style="color: #333333">.</span>setsockopt(socket<span style="color: #333333">.</span>SOL_SOCKET, socket<span style="color: #333333">.</span>SO_REUSEADDR, <span style="color: #0000DD; font-weight: bold">1</span>) <span style="color: #888888">#Configure the socket</span>
+        s<span style="color: #333333">.</span>bind((HOST, PORT)) <span style="color: #888888">#Bind the socket</span>
+        s<span style="color: #333333">.</span>listen(<span style="color: #0000DD; font-weight: bold">5</span>) <span style="color: #888888">#Listen for clients</span>
+        conn, addr <span style="color: #333333">=</span> s<span style="color: #333333">.</span>accept() <span style="color: #888888">#Accept the connection</span>
+        <span style="color: #007020">print</span>(addr) <span style="color: #888888">#Print the address of the connected clients</span>
+
+        connected <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span> <span style="color: #888888">#The connected flag</span>
+    
+        <span style="color: #008800; font-weight: bold">while</span> <span style="color: #008800; font-weight: bold">True</span>: <span style="color: #888888">#While infinity</span>
+            connected <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span> <span style="color: #888888">#Default the connected flag to false</span>
+            pixels <span style="color: #333333">=</span> [] <span style="color: #888888">#The pixels array</span>
+            <span style="color: #008800; font-weight: bold">for</span> row <span style="color: #000000; font-weight: bold">in</span> sensor<span style="color: #333333">.</span>pixels:
+                pixels <span style="color: #333333">=</span> pixels <span style="color: #333333">+</span> row
+            pixels <span style="color: #333333">=</span> [map_value(p, MINTEMP, MAXTEMP, <span style="color: #0000DD; font-weight: bold">0</span>, COLORDEPTH <span style="color: #333333">-</span> <span style="color: #0000DD; font-weight: bold">1</span>) <span style="color: #008800; font-weight: bold">for</span> p <span style="color: #000000; font-weight: bold">in</span> pixels]
+
+            bicubic <span style="color: #333333">=</span> griddata(points, pixels, (grid_x, grid_y), method<span style="color: #333333">=</span><span style="background-color: #fff0f0">&quot;cubic&quot;</span>)
+
+            data <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;&quot;</span> <span style="color: #888888">#The data to be transmitted</span>
+            <span style="color: #008800; font-weight: bold">for</span> pixel <span style="color: #000000; font-weight: bold">in</span> pixels: <span style="color: #888888">#Append the pixels to the data to be transmitted with a &#39;,&#39; delimiter</span>
+                data <span style="color: #333333">=</span> data <span style="color: #333333">+</span> <span style="color: #007020">str</span>(pixel) <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;,&quot;</span>
+            data <span style="color: #333333">=</span> data <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;;&quot;</span>  <span style="color: #888888">#Append the &#39;;&#39; delimiter</span>
+            <span style="color: #008800; font-weight: bold">for</span> bi <span style="color: #000000; font-weight: bold">in</span> bicubic: <span style="color: #888888">#Append the bicubic to the data to be transmitted with a &#39;,&#39; delimiter</span>
+                <span style="color: #008800; font-weight: bold">for</span> b <span style="color: #000000; font-weight: bold">in</span> bi:
+                    data <span style="color: #333333">=</span> data <span style="color: #333333">+</span> <span style="color: #007020">str</span>(b) <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;,&quot;</span>
+            data <span style="color: #333333">=</span> data <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;;&quot;</span> <span style="color: #888888">#Append the &#39;;&#39; delimiter</span>
+            <span style="color: #008800; font-weight: bold">for</span> color <span style="color: #000000; font-weight: bold">in</span> colors: <span style="color: #888888">#Append the color to the data to be transmitted with a &#39;:&#39; delimiter</span>
+                data <span style="color: #333333">=</span> data <span style="color: #333333">+</span> <span style="color: #007020">str</span>(color) <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;:&quot;</span>
+            data <span style="color: #333333">=</span> data <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;;&quot;</span> <span style="color: #888888">#Append the &#39;;&#39; delimiter</span>
+            data <span style="color: #333333">=</span> data <span style="color: #333333">+</span> waterVar <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;,&quot;</span> <span style="color: #333333">+</span> fireVar <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;,&quot;</span> <span style="color: #333333">+</span> radiationVar <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;,&quot;</span> <span style="color: #333333">+</span> <span style="color: #007020">str</span>(tempVar) <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;,&quot;</span> <span style="color: #333333">+</span> <span style="color: #007020">str</span>(distVar) <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;;&quot;</span> <span style="color: #888888">#Append the sensor data to the data to be transmitted with a &#39;,&#39; delimiter</span>
+            <span style="color: #008800; font-weight: bold">try</span>:
+                conn<span style="color: #333333">.</span>send((data <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;</span><span style="color: #666666; font-weight: bold; background-color: #fff0f0">\n</span><span style="background-color: #fff0f0">&quot;</span>)<span style="color: #333333">.</span>encode()) <span style="color: #888888">#Encode the data and transmit over TCP/IP connection</span>
+                connected <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span> <span style="color: #888888">#If no error is thrown, mark the connected flag as true</span>
+            <span style="color: #008800; font-weight: bold">except</span>: <span style="color: #888888">#If an error is thrown</span>
+                <span style="color: #888888">#Try reconnecting</span>
+                s <span style="color: #333333">=</span> socket<span style="color: #333333">.</span>socket(socket<span style="color: #333333">.</span>AF_INET, socket<span style="color: #333333">.</span>SOCK_STREAM)
+                s<span style="color: #333333">.</span>setsockopt(socket<span style="color: #333333">.</span>SOL_SOCKET, socket<span style="color: #333333">.</span>SO_REUSEADDR, <span style="color: #0000DD; font-weight: bold">1</span>)
+                s<span style="color: #333333">.</span>bind((HOST, PORT))
+                s<span style="color: #333333">.</span>listen(<span style="color: #0000DD; font-weight: bold">5</span>)
+                conn, addr <span style="color: #333333">=</span> s<span style="color: #333333">.</span>accept()
+                <span style="color: #007020">print</span>(addr)
+                connected <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span> <span style="color: #888888">#Mark the connected flag as true</span>
+            <span style="color: #008800; font-weight: bold">if</span> connected: <span style="color: #888888">#If connected</span>
+                <span style="color: #008800; font-weight: bold">try</span>:
+                    command <span style="color: #333333">=</span> conn<span style="color: #333333">.</span>recv(<span style="color: #0000DD; font-weight: bold">1024</span>) <span style="color: #888888">#Receive the data from clients</span>
+                    command <span style="color: #333333">=</span> command<span style="color: #333333">.</span>decode()<span style="color: #333333">.</span>strip() <span style="color: #888888">#If the data is received, decode the command, then strip all the whitespaces</span>
+                <span style="color: #008800; font-weight: bold">except</span>: <span style="color: #888888">#If the data reception fails</span>
+                    connected <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span> <span style="color: #888888">#Mark the connected flag as false</span>
+            <span style="color: #008800; font-weight: bold">if</span>(command <span style="color: #333333">!=</span> prevCommand): <span style="color: #888888">#If the command has changed</span>
+                <span style="color: #007020">print</span>(command) <span style="color: #888888">#Print the new command</span>
+                
+            <span style="color: #008800; font-weight: bold">if</span>(command <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&quot;STOP&quot;</span> <span style="color: #000000; font-weight: bold">and</span> prevCommand <span style="color: #333333">!=</span> <span style="background-color: #fff0f0">&quot;STOP&quot;</span>): <span style="color: #888888">#If the new command is STOP</span>
+                GPIO<span style="color: #333333">.</span>output(motor1Pin1, GPIO<span style="color: #333333">.</span>LOW)
+                GPIO<span style="color: #333333">.</span>output(motor1Pin2, GPIO<span style="color: #333333">.</span>LOW)
+                GPIO<span style="color: #333333">.</span>output(motor2Pin1, GPIO<span style="color: #333333">.</span>LOW)
+                GPIO<span style="color: #333333">.</span>output(motor2Pin2, GPIO<span style="color: #333333">.</span>LOW)
+            <span style="color: #008800; font-weight: bold">elif</span>(command <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&quot;UP&quot;</span> <span style="color: #000000; font-weight: bold">and</span> prevCommand <span style="color: #333333">!=</span> <span style="background-color: #fff0f0">&quot;UP&quot;</span>): <span style="color: #888888">#If the new command is UP</span>
+                <span style="color: #008800; font-weight: bold">if</span> distVar <span style="color: #333333">&gt;</span> distToStop: <span style="color: #888888">#If the distance is greater than the threshold value</span>
+                    GPIO<span style="color: #333333">.</span>output(motor1Pin1, GPIO<span style="color: #333333">.</span>LOW)
+                    GPIO<span style="color: #333333">.</span>output(motor1Pin2, GPIO<span style="color: #333333">.</span>HIGH)
+                    GPIO<span style="color: #333333">.</span>output(motor2Pin1, GPIO<span style="color: #333333">.</span>HIGH)
+                    GPIO<span style="color: #333333">.</span>output(motor2Pin2, GPIO<span style="color: #333333">.</span>LOW)
+                <span style="color: #008800; font-weight: bold">else</span>:
+                    GPIO<span style="color: #333333">.</span>output(motor1Pin1, GPIO<span style="color: #333333">.</span>LOW)
+                    GPIO<span style="color: #333333">.</span>output(motor1Pin2, GPIO<span style="color: #333333">.</span>LOW)
+                    GPIO<span style="color: #333333">.</span>output(motor2Pin1, GPIO<span style="color: #333333">.</span>LOW)
+                    GPIO<span style="color: #333333">.</span>output(motor2Pin2, GPIO<span style="color: #333333">.</span>LOW)
+            <span style="color: #008800; font-weight: bold">elif</span>(command <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&quot;DOWN&quot;</span> <span style="color: #000000; font-weight: bold">and</span> prevCommand <span style="color: #333333">!=</span> <span style="background-color: #fff0f0">&quot;DOWN&quot;</span>): <span style="color: #888888">#If the new command is DOWN</span>
+                GPIO<span style="color: #333333">.</span>output(motor1Pin1, GPIO<span style="color: #333333">.</span>HIGH)
+                GPIO<span style="color: #333333">.</span>output(motor1Pin2, GPIO<span style="color: #333333">.</span>LOW)
+                GPIO<span style="color: #333333">.</span>output(motor2Pin1, GPIO<span style="color: #333333">.</span>LOW)
+                GPIO<span style="color: #333333">.</span>output(motor2Pin2, GPIO<span style="color: #333333">.</span>HIGH)
+            <span style="color: #008800; font-weight: bold">elif</span>(command <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&quot;LEFT&quot;</span> <span style="color: #000000; font-weight: bold">and</span> prevCommand <span style="color: #333333">!=</span> <span style="background-color: #fff0f0">&quot;LEFT&quot;</span>): <span style="color: #888888">#If the new command is LEFT</span>
+                GPIO<span style="color: #333333">.</span>output(motor1Pin1, GPIO<span style="color: #333333">.</span>HIGH)
+                GPIO<span style="color: #333333">.</span>output(motor1Pin2, GPIO<span style="color: #333333">.</span>LOW)
+                GPIO<span style="color: #333333">.</span>output(motor2Pin1, GPIO<span style="color: #333333">.</span>HIGH)
+                GPIO<span style="color: #333333">.</span>output(motor2Pin2, GPIO<span style="color: #333333">.</span>LOW)
+            <span style="color: #008800; font-weight: bold">elif</span>(command <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&quot;RIGHT&quot;</span> <span style="color: #000000; font-weight: bold">and</span> prevCommand <span style="color: #333333">!=</span> <span style="background-color: #fff0f0">&quot;RIGHT&quot;</span>): <span style="color: #888888">#If the new command is RIGHT</span>
+                GPIO<span style="color: #333333">.</span>output(motor1Pin1, GPIO<span style="color: #333333">.</span>LOW)
+                GPIO<span style="color: #333333">.</span>output(motor1Pin2, GPIO<span style="color: #333333">.</span>HIGH)
+                GPIO<span style="color: #333333">.</span>output(motor2Pin1, GPIO<span style="color: #333333">.</span>LOW)
+                GPIO<span style="color: #333333">.</span>output(motor2Pin2, GPIO<span style="color: #333333">.</span>HIGH)
+            <span style="color: #008800; font-weight: bold">elif</span>(command <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&quot;HELP&quot;</span> <span style="color: #000000; font-weight: bold">and</span> prevCommand <span style="color: #333333">!=</span> <span style="background-color: #fff0f0">&quot;HELP&quot;</span>): <span style="color: #888888">#If the new command is HELP</span>
+                GPIO<span style="color: #333333">.</span>output(motor1Pin1, GPIO<span style="color: #333333">.</span>LOW)
+                GPIO<span style="color: #333333">.</span>output(motor1Pin2, GPIO<span style="color: #333333">.</span>LOW)
+                GPIO<span style="color: #333333">.</span>output(motor2Pin1, GPIO<span style="color: #333333">.</span>LOW)
+                GPIO<span style="color: #333333">.</span>output(motor2Pin2, GPIO<span style="color: #333333">.</span>LOW)
+                pygame<span style="color: #333333">.</span>mixer<span style="color: #333333">.</span>music<span style="color: #333333">.</span>load(<span style="background-color: #fff0f0">&quot;help.wav&quot;</span>) <span style="color: #888888">#Load the audio file</span>
+                pygame<span style="color: #333333">.</span>mixer<span style="color: #333333">.</span>music<span style="color: #333333">.</span>play() <span style="color: #888888">#Play the audio file</span>
+            <span style="color: #008800; font-weight: bold">elif</span>(command <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&quot;RECORD&quot;</span> <span style="color: #000000; font-weight: bold">and</span> prevCommand <span style="color: #333333">!=</span> <span style="background-color: #fff0f0">&quot;RECORD&quot;</span>): <span style="color: #888888">#If the new command is RECORD</span>
+                GPIO<span style="color: #333333">.</span>output(motor1Pin1, GPIO<span style="color: #333333">.</span>LOW)
+                GPIO<span style="color: #333333">.</span>output(motor1Pin2, GPIO<span style="color: #333333">.</span>LOW)
+                GPIO<span style="color: #333333">.</span>output(motor2Pin1, GPIO<span style="color: #333333">.</span>LOW)
+                GPIO<span style="color: #333333">.</span>output(motor2Pin2, GPIO<span style="color: #333333">.</span>LOW)
+                pygame<span style="color: #333333">.</span>mixer<span style="color: #333333">.</span>music<span style="color: #333333">.</span>load(<span style="background-color: #fff0f0">&quot;record.wav&quot;</span>) <span style="color: #888888">#Load the audio file</span>
+                pygame<span style="color: #333333">.</span>mixer<span style="color: #333333">.</span>music<span style="color: #333333">.</span>play() <span style="color: #888888">#Play the audio file</span>
+                <span style="color: #008800; font-weight: bold">while</span>(pygame<span style="color: #333333">.</span>mixer<span style="color: #333333">.</span>music<span style="color: #333333">.</span>get_busy() <span style="color: #333333">==</span> <span style="color: #008800; font-weight: bold">True</span>): <span style="color: #888888">#While the audio files is being played</span>
+                    <span style="color: #008800; font-weight: bold">pass</span> <span style="color: #888888">#Pass</span>
+                os<span style="color: #333333">.</span>system(<span style="background-color: #fff0f0">&#39;arecord --device=hw:2,0 -d 5 --format S16_LE --rate 44100 -c1 victimRecord.wav -V mono&#39;</span>) <span style="color: #888888">#System command to record from microphone</span>
+            <span style="color: #008800; font-weight: bold">elif</span>(command <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&quot;PLAY&quot;</span> <span style="color: #000000; font-weight: bold">and</span> prevCommand <span style="color: #333333">!=</span> <span style="background-color: #fff0f0">&quot;PLAY&quot;</span>): <span style="color: #888888">#If the new command is PLAY</span>
+                GPIO<span style="color: #333333">.</span>output(motor1Pin1, GPIO<span style="color: #333333">.</span>LOW)
+                GPIO<span style="color: #333333">.</span>output(motor1Pin2, GPIO<span style="color: #333333">.</span>LOW)
+                GPIO<span style="color: #333333">.</span>output(motor2Pin1, GPIO<span style="color: #333333">.</span>LOW)
+                GPIO<span style="color: #333333">.</span>output(motor2Pin2, GPIO<span style="color: #333333">.</span>LOW)
+                pygame<span style="color: #333333">.</span>mixer<span style="color: #333333">.</span>music<span style="color: #333333">.</span>load(<span style="background-color: #fff0f0">&quot;victimRecord.wav&quot;</span>) <span style="color: #888888">#Load the audio file</span>
+                pygame<span style="color: #333333">.</span>mixer<span style="color: #333333">.</span>music<span style="color: #333333">.</span>play() <span style="color: #888888">#Play the audio file</span>
+            <span style="color: #008800; font-weight: bold">elif</span>(command <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&quot;MAP&quot;</span> <span style="color: #000000; font-weight: bold">and</span> prevCommand <span style="color: #333333">!=</span> <span style="background-color: #fff0f0">&quot;MAP&quot;</span>): <span style="color: #888888">#If the new command is MAP</span>
+                startMap() <span style="color: #888888">#Start mapping</span>
+            <span style="color: #008800; font-weight: bold">elif</span>(command <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&quot;INC&quot;</span>): <span style="color: #888888">#If the new command is INC</span>
+                <span style="color: #008800; font-weight: bold">if</span> dutyCycle <span style="color: #333333">&lt;</span> <span style="color: #0000DD; font-weight: bold">100</span>: <span style="color: #888888">#If duty cycle is less than 100</span>
+                    dutyCycle <span style="color: #333333">+=</span> <span style="color: #0000DD; font-weight: bold">1</span> <span style="color: #888888">#Increment duty cycle</span>
+                    <span style="color: #888888">#Change duty cycle</span>
+                    motor1PWM<span style="color: #333333">.</span>ChangeDutyCycle(dutyCycle)
+                    motor2PWM<span style="color: #333333">.</span>ChangeDutyCycle(dutyCycle)
+            <span style="color: #008800; font-weight: bold">elif</span>(command <span style="color: #333333">==</span> <span style="background-color: #fff0f0">&quot;DEC&quot;</span>): <span style="color: #888888">#If the new command is DEC</span>
+                <span style="color: #008800; font-weight: bold">if</span> dutyCycle <span style="color: #333333">&gt;</span> <span style="color: #0000DD; font-weight: bold">40</span>: <span style="color: #888888">#If duty cycle is greater than 40</span>
+                    dutyCycle <span style="color: #333333">-=</span> <span style="color: #0000DD; font-weight: bold">1</span> <span style="color: #888888">#Decrement duty cycle</span>
+                    <span style="color: #888888">#Change duty cycle</span>
+                    motor1PWM<span style="color: #333333">.</span>ChangeDutyCycle(dutyCycle)
+                    motor2PWM<span style="color: #333333">.</span>ChangeDutyCycle(dutyCycle)
+            
+            prevCommand <span style="color: #333333">=</span> command <span style="color: #888888">#Change previous command</span>
+            
+            <span style="color: #008800; font-weight: bold">if</span>(time<span style="color: #333333">.</span>time() <span style="color: #333333">-</span> timeStamp <span style="color: #333333">&gt;</span> <span style="color: #6600EE; font-weight: bold">0.01</span>): <span style="color: #888888">#If the time elapsed is 1 millisecond</span>
+                adc <span style="color: #333333">=</span> readAdc(<span style="color: #0000DD; font-weight: bold">0</span>, CLK, MISO, MOSI, CS) <span style="color: #888888">#Read ADC</span>
+                <span style="color: #008800; font-weight: bold">try</span>:
+                    tempVar <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">10</span> <span style="color: #333333">*</span> log(<span style="color: #0000DD; font-weight: bold">10000</span> <span style="color: #333333">*</span> (<span style="color: #0000DD; font-weight: bold">1024</span> <span style="color: #333333">/</span> (adc <span style="color: #333333">/</span> <span style="color: #6600EE; font-weight: bold">3.3</span>) <span style="color: #333333">-</span> <span style="color: #0000DD; font-weight: bold">1</span>), <span style="color: #0000DD; font-weight: bold">10</span>) <span style="color: #333333">-</span> <span style="color: #0000DD; font-weight: bold">10</span> <span style="color: #888888">#Scale the temperature</span>
+                    tempVar <span style="color: #333333">=</span> <span style="color: #007020">round</span>(tempVar, <span style="color: #0000DD; font-weight: bold">3</span>) <span style="color: #888888">#Round the temperature to 3 digits</span>
+                <span style="color: #008800; font-weight: bold">except</span>: <span style="color: #888888">#If it throws an error</span>
+                    <span style="color: #008800; font-weight: bold">pass</span>
+                distVar <span style="color: #333333">=</span> <span style="color: #007020">round</span>(distance(), <span style="color: #0000DD; font-weight: bold">3</span>) <span style="color: #888888">#Fetch the distance and round it to 3 digits</span>
+                <span style="color: #008800; font-weight: bold">if</span>(distVar <span style="color: #333333">&lt;</span> distToStop): <span style="color: #888888">#If the distance is less tha  threshold distance</span>
+                    <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;Dist Stopping..&quot;</span>) <span style="color: #888888">#Print &quot;Dist Stopping..&quot;</span>
+                timeStamp <span style="color: #333333">=</span> time<span style="color: #333333">.</span>time() <span style="color: #888888">#Update the timestamp</span>
+    <span style="color: #008800; font-weight: bold">except</span> <span style="color: #FF0000; font-weight: bold">KeyboardInterrupt</span>: <span style="color: #888888">#If interrupted from keyboard</span>
+        motor1PWM<span style="color: #333333">.</span>stop() <span style="color: #888888">#Stop the motor 1 PWM</span>
+        motor2PWM<span style="color: #333333">.</span>stop() <span style="color: #888888">#Stop the motor 2 PWM</span>
+        GPIO<span style="color: #333333">.</span>cleanup() <span style="color: #888888">#Cleanup GPIO</span>
+        <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;Exiting...&quot;</span>) <span style="color: #888888">#Print &quot;Exiting...&quot;</span>
+        sys<span style="color: #333333">.</span>exit(<span style="color: #0000DD; font-weight: bold">0</span>) <span style="color: #888888">#Exit the program</span>
+</pre></div>
+
+<h5 style="text-align:justify;">MainCode.pde</h5>
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #888888">//Import libraries for TCP/IP</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.net.*</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.io.*</span><span style="color: #333333">;</span>
+
+ArrayList <span style="color: #333333">&lt;</span>Button<span style="color: #333333">&gt;</span> buttons <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> ArrayList<span style="color: #333333">&lt;</span>Button<span style="color: #333333">&gt;();</span> <span style="color: #888888">//Arraylist for buttons</span>
+
+String hostname <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;10.49.74.93&quot;</span><span style="color: #333333">;</span> <span style="color: #888888">//IP address of the server to connect to</span>
+<span style="color: #333399; font-weight: bold">int</span> port <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">8000</span><span style="color: #333333">;</span> <span style="color: #888888">//Port for the socket to connect to</span>
+
+<span style="color: #333399; font-weight: bold">int</span> buttonSize <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">150</span><span style="color: #333333">;</span> <span style="color: #888888">//The default button size</span>
+String command <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;STOP&quot;</span><span style="color: #333333">;</span> <span style="color: #888888">//The default command to send</span>
+<span style="color: #333399; font-weight: bold">boolean</span> commLock <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">false</span><span style="color: #333333">;</span> <span style="color: #888888">//Flag for communication lock</span>
+
+<span style="color: #333399; font-weight: bold">float</span> pixelVals<span style="color: #333333">[]</span> <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> <span style="color: #333399; font-weight: bold">float</span><span style="color: #333333">[</span><span style="color: #0000DD; font-weight: bold">64</span><span style="color: #333333">];</span> <span style="color: #888888">//Pixel array</span>
+<span style="color: #333399; font-weight: bold">float</span> bicubics<span style="color: #333333">[][]</span> <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> <span style="color: #333399; font-weight: bold">float</span><span style="color: #333333">[</span><span style="color: #0000DD; font-weight: bold">32</span><span style="color: #333333">][</span><span style="color: #0000DD; font-weight: bold">32</span><span style="color: #333333">];</span> <span style="color: #888888">//Bicubics array</span>
+color colorArray<span style="color: #333333">[]</span> <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> color<span style="color: #333333">[</span><span style="color: #0000DD; font-weight: bold">1024</span><span style="color: #333333">];</span> <span style="color: #888888">//Colour array</span>
+
+InputStreamReader reader<span style="color: #333333">;</span> <span style="color: #888888">//Input stream reader</span>
+PrintWriter writer<span style="color: #333333">;</span> <span style="color: #888888">//Output print writer</span>
+
+<span style="color: #333399; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">setup</span><span style="color: #333333">(){</span> <span style="color: #888888">//The setup function</span>
+  fullScreen<span style="color: #333333">();</span> <span style="color: #888888">//Setup screen to be full screen</span>
+  orientation<span style="color: #333333">(</span>LANDSCAPE<span style="color: #333333">);</span> <span style="color: #888888">//Set the orientation to be landscape</span>
+  frameRate<span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">60</span><span style="color: #333333">);</span> <span style="color: #888888">//Set the frame rate to be 60 fps</span>
+  <span style="color: #008800; font-weight: bold">try</span><span style="color: #333333">{</span> <span style="color: #888888">//Try</span>
+    Socket socket <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> Socket<span style="color: #333333">(</span>hostname<span style="color: #333333">,</span> port<span style="color: #333333">);</span> <span style="color: #888888">//Connect to the socket</span>
+    InputStream input <span style="color: #333333">=</span> socket<span style="color: #333333">.</span><span style="color: #0000CC">getInputStream</span><span style="color: #333333">();</span> <span style="color: #888888">//Create the input stream to read incoming data</span>
+    OutputStream output <span style="color: #333333">=</span> socket<span style="color: #333333">.</span><span style="color: #0000CC">getOutputStream</span><span style="color: #333333">();</span> <span style="color: #888888">//Create the output stream to write outgoing data</span>
+    reader <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> InputStreamReader<span style="color: #333333">(</span>input<span style="color: #333333">);</span> <span style="color: #888888">//Attach the reader to the input stream</span>
+    writer <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> PrintWriter<span style="color: #333333">(</span>output<span style="color: #333333">,</span> <span style="color: #008800; font-weight: bold">true</span><span style="color: #333333">);</span> <span style="color: #888888">//Attach the writer to the output stream</span>
+  <span style="color: #333333">}</span>
+  <span style="color: #008800; font-weight: bold">catch</span> <span style="color: #333333">(</span>Exception ex<span style="color: #333333">)</span> <span style="color: #333333">{</span> <span style="color: #888888">//Catch exception</span>
+    textSize<span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">20</span><span style="color: #333333">);</span> <span style="color: #888888">//Set the text size to be 20</span>
+    fill<span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">);</span> <span style="color: #888888">//Change colour to black</span>
+    text<span style="color: #333333">(</span>ex<span style="color: #333333">.</span><span style="color: #0000CC">getMessage</span><span style="color: #333333">(),</span> <span style="color: #0000DD; font-weight: bold">5</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">20</span><span style="color: #333333">);</span> <span style="color: #888888">//Display the error message</span>
+    println<span style="color: #333333">(</span>ex<span style="color: #333333">.</span><span style="color: #0000CC">getMessage</span><span style="color: #333333">());</span> <span style="color: #888888">//Print the error message</span>
+  <span style="color: #333333">}</span>
+  
+  addButtons<span style="color: #333333">();</span> <span style="color: #888888">//Add all the buttons</span>
+<span style="color: #333333">}</span>
+
+<span style="color: #333399; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">draw</span><span style="color: #333333">(){</span> <span style="color: #888888">//The draw function</span>
+  background<span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">255</span><span style="color: #333333">);</span> <span style="color: #888888">//Fill screen with white colour</span>
+  
+  <span style="color: #008800; font-weight: bold">try</span><span style="color: #333333">{</span> <span style="color: #888888">//Try</span>
+    <span style="color: #333399; font-weight: bold">int</span> character<span style="color: #333333">;</span> <span style="color: #888888">//Character to be read</span>
+    StringBuilder data <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> StringBuilder<span style="color: #333333">();</span> <span style="color: #888888">//String builder</span>
+    character <span style="color: #333333">=</span> reader<span style="color: #333333">.</span><span style="color: #0000CC">read</span><span style="color: #333333">();</span> <span style="color: #888888">//Rad the character</span>
+    <span style="color: #008800; font-weight: bold">while</span> <span style="color: #333333">((</span>character <span style="color: #333333">!=</span> <span style="color: #0000DD; font-weight: bold">10</span><span style="color: #333333">)</span> <span style="color: #333333">&amp;&amp;</span> <span style="color: #333333">((</span>character <span style="color: #333333">!=</span> <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span><span style="color: #333333">)))</span> <span style="color: #333333">{</span> <span style="color: #888888">//Until the character is new line or null</span>
+      data<span style="color: #333333">.</span><span style="color: #0000CC">append</span><span style="color: #333333">((</span><span style="color: #333399; font-weight: bold">char</span><span style="color: #333333">)</span> character<span style="color: #333333">);</span> <span style="color: #888888">//Append the character to the string builder</span>
+      character <span style="color: #333333">=</span> reader<span style="color: #333333">.</span><span style="color: #0000CC">read</span><span style="color: #333333">();</span> <span style="color: #888888">//Read the next character</span>
+    <span style="color: #333333">}</span>
+    data<span style="color: #333333">.</span><span style="color: #0000CC">append</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;\n&quot;</span><span style="color: #333333">);</span> <span style="color: #888888">//Append a new line character</span>
+    String receivedString <span style="color: #333333">=</span> data<span style="color: #333333">.</span><span style="color: #0000CC">toString</span><span style="color: #333333">();</span> <span style="color: #888888">//Convert to string</span>
+    String dataArrays<span style="color: #333333">[]</span> <span style="color: #333333">=</span> receivedString<span style="color: #333333">.</span><span style="color: #0000CC">split</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;;&quot;</span><span style="color: #333333">);</span> <span style="color: #888888">//Split the received string around the &quot;;&quot; character and store the resultant substrings into an array </span>
+    String pixelArray<span style="color: #333333">[]</span> <span style="color: #333333">=</span> dataArrays<span style="color: #333333">[</span><span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">].</span><span style="color: #0000CC">split</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;,&quot;</span><span style="color: #333333">);</span> <span style="color: #888888">//Split the pixel array around the &quot;,&quot; character</span>
+    String bicubicArray<span style="color: #333333">[]</span> <span style="color: #333333">=</span> dataArrays<span style="color: #333333">[</span><span style="color: #0000DD; font-weight: bold">1</span><span style="color: #333333">].</span><span style="color: #0000CC">split</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;,&quot;</span><span style="color: #333333">);</span> <span style="color: #888888">//Split the bicubic array around the &quot;,&quot; character</span>
+    String colArray<span style="color: #333333">[]</span> <span style="color: #333333">=</span> dataArrays<span style="color: #333333">[</span><span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">].</span><span style="color: #0000CC">split</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;:&quot;</span><span style="color: #333333">);</span> <span style="color: #888888">//Split the colour array around the &quot;:&quot; character</span>
+    String sensorArray<span style="color: #333333">[]</span> <span style="color: #333333">=</span> dataArrays<span style="color: #333333">[</span><span style="color: #0000DD; font-weight: bold">3</span><span style="color: #333333">].</span><span style="color: #0000CC">split</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;,&quot;</span><span style="color: #333333">);</span> <span style="color: #888888">//Split the sensor array around the &quot;,&quot; character</span>
+    
+    fill<span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">);</span> <span style="color: #888888">//Make the colour black</span>
+    textSize<span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">40</span><span style="color: #333333">);</span> <span style="color: #888888">//Set the text size to be 40</span>
+    <span style="color: #888888">//Print the sensor strings on the screen</span>
+    text<span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Water: &quot;</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">40</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">100</span><span style="color: #333333">);</span>
+    text<span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Fire: &quot;</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">40</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">150</span><span style="color: #333333">);</span>
+    text<span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Radiation: &quot;</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">40</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">200</span><span style="color: #333333">);</span>
+    text<span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Temperature: &quot;</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">40</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">250</span><span style="color: #333333">);</span>
+    text<span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;Distance: &quot;</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">40</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">300</span><span style="color: #333333">);</span>
+    <span style="color: #888888">//Print the sensor values on the screen</span>
+    <span style="color: #008800; font-weight: bold">for</span><span style="color: #333333">(</span><span style="color: #333399; font-weight: bold">int</span> i <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">;</span> i <span style="color: #333333">&lt;</span> sensorArray<span style="color: #333333">.</span><span style="color: #0000CC">length</span><span style="color: #333333">;</span> i<span style="color: #333333">++){</span>
+      text<span style="color: #333333">(</span>sensorArray<span style="color: #333333">[</span>i<span style="color: #333333">],</span> <span style="color: #0000DD; font-weight: bold">305</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">100</span> <span style="color: #333333">+</span> i <span style="color: #333333">*</span> <span style="color: #0000DD; font-weight: bold">50</span><span style="color: #333333">);</span>
+    <span style="color: #333333">}</span>
+    <span style="color: #888888">//Get pixel values</span>
+    <span style="color: #008800; font-weight: bold">for</span><span style="color: #333333">(</span><span style="color: #333399; font-weight: bold">int</span> i <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">;</span> i <span style="color: #333333">&lt;</span> pixelVals<span style="color: #333333">.</span><span style="color: #0000CC">length</span><span style="color: #333333">;</span> i<span style="color: #333333">++){</span>
+      pixelVals<span style="color: #333333">[</span>i<span style="color: #333333">]</span> <span style="color: #333333">=</span> Float<span style="color: #333333">.</span><span style="color: #0000CC">parseFloat</span><span style="color: #333333">(</span>pixelArray<span style="color: #333333">[</span>i<span style="color: #333333">]);</span>
+    <span style="color: #333333">}</span>
+    <span style="color: #888888">//Get bicubic values</span>
+    <span style="color: #008800; font-weight: bold">for</span><span style="color: #333333">(</span><span style="color: #333399; font-weight: bold">int</span> i <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">;</span> i <span style="color: #333333">&lt;</span> bicubics<span style="color: #333333">.</span><span style="color: #0000CC">length</span><span style="color: #333333">;</span> i<span style="color: #333333">++){</span>
+      <span style="color: #008800; font-weight: bold">for</span><span style="color: #333333">(</span><span style="color: #333399; font-weight: bold">int</span> j <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">;</span> j <span style="color: #333333">&lt;</span> bicubics<span style="color: #333333">[</span>i<span style="color: #333333">].</span><span style="color: #0000CC">length</span><span style="color: #333333">;</span> j<span style="color: #333333">++){</span>
+        bicubics<span style="color: #333333">[</span>i<span style="color: #333333">][</span>j<span style="color: #333333">]</span> <span style="color: #333333">=</span> Float<span style="color: #333333">.</span><span style="color: #0000CC">parseFloat</span><span style="color: #333333">(</span>bicubicArray<span style="color: #333333">[</span>i <span style="color: #333333">*</span> bicubics<span style="color: #333333">.</span><span style="color: #0000CC">length</span> <span style="color: #333333">+</span> j<span style="color: #333333">]);</span>
+      <span style="color: #333333">}</span>
+    <span style="color: #333333">}</span>
+    <span style="color: #888888">//Get colour values</span>
+    <span style="color: #008800; font-weight: bold">for</span><span style="color: #333333">(</span><span style="color: #333399; font-weight: bold">int</span> i <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">;</span> i <span style="color: #333333">&lt;</span> colorArray<span style="color: #333333">.</span><span style="color: #0000CC">length</span><span style="color: #333333">;</span> i<span style="color: #333333">++){</span>
+      String redGreenBlue<span style="color: #333333">[]</span> <span style="color: #333333">=</span> colArray<span style="color: #333333">[</span>i<span style="color: #333333">].</span><span style="color: #0000CC">split</span><span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;,&quot;</span><span style="color: #333333">);</span>
+      colorArray<span style="color: #333333">[</span>i<span style="color: #333333">]</span> <span style="color: #333333">=</span> color<span style="color: #333333">(</span>Integer<span style="color: #333333">.</span><span style="color: #0000CC">parseInt</span><span style="color: #333333">(</span>redGreenBlue<span style="color: #333333">[</span><span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">].</span><span style="color: #0000CC">substring</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">1</span><span style="color: #333333">).</span><span style="color: #0000CC">trim</span><span style="color: #333333">()),</span> Integer<span style="color: #333333">.</span><span style="color: #0000CC">parseInt</span><span style="color: #333333">(</span>redGreenBlue<span style="color: #333333">[</span><span style="color: #0000DD; font-weight: bold">1</span><span style="color: #333333">].</span><span style="color: #0000CC">trim</span><span style="color: #333333">()),</span> Integer<span style="color: #333333">.</span><span style="color: #0000CC">parseInt</span><span style="color: #333333">(</span>redGreenBlue<span style="color: #333333">[</span><span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">].</span><span style="color: #0000CC">substring</span><span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">,</span> redGreenBlue<span style="color: #333333">[</span><span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">].</span><span style="color: #0000CC">length</span><span style="color: #333333">()</span> <span style="color: #333333">-</span> <span style="color: #0000DD; font-weight: bold">1</span><span style="color: #333333">).</span><span style="color: #0000CC">trim</span><span style="color: #333333">()));</span>
+    <span style="color: #333333">}</span>
+    <span style="color: #888888">//Do the colour printing magic to create the image in the screen</span>
+    <span style="color: #008800; font-weight: bold">for</span><span style="color: #333333">(</span><span style="color: #333399; font-weight: bold">int</span> i <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">;</span> i <span style="color: #333333">&lt;</span> bicubics<span style="color: #333333">.</span><span style="color: #0000CC">length</span><span style="color: #333333">;</span> i<span style="color: #333333">++){</span>
+      <span style="color: #008800; font-weight: bold">for</span><span style="color: #333333">(</span><span style="color: #333399; font-weight: bold">int</span> j <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">;</span> j <span style="color: #333333">&lt;</span> bicubics<span style="color: #333333">[</span>i<span style="color: #333333">].</span><span style="color: #0000CC">length</span><span style="color: #333333">;</span> j<span style="color: #333333">++){</span>
+        <span style="color: #333399; font-weight: bold">float</span> pixelVal <span style="color: #333333">=</span> bicubics<span style="color: #333333">[</span>i<span style="color: #333333">][</span>j<span style="color: #333333">];</span>
+        fill<span style="color: #333333">(</span>colorArray<span style="color: #333333">[</span>myConstrain<span style="color: #333333">((</span><span style="color: #333399; font-weight: bold">int</span><span style="color: #333333">)</span> pixelVal<span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">1024</span> <span style="color: #333333">-</span> <span style="color: #0000DD; font-weight: bold">1</span><span style="color: #333333">)]);</span>
+        rect<span style="color: #333333">((</span>width <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">((</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">30</span><span style="color: #333333">)</span> <span style="color: #333333">*</span> i<span style="color: #333333">),</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">30</span><span style="color: #333333">)</span> <span style="color: #333333">*</span> j<span style="color: #333333">,</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">30</span><span style="color: #333333">),</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">30</span><span style="color: #333333">));</span>
+      <span style="color: #333333">}</span>
+    <span style="color: #333333">}</span>
+  <span style="color: #333333">}</span>
+  <span style="color: #008800; font-weight: bold">catch</span> <span style="color: #333333">(</span>Exception ex<span style="color: #333333">)</span> <span style="color: #333333">{</span> <span style="color: #888888">//Catch exception</span>
+    textSize<span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">20</span><span style="color: #333333">);</span> <span style="color: #888888">//Set the text size to be 20</span>
+    fill<span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">);</span> <span style="color: #888888">//Change colour to black</span>
+    text<span style="color: #333333">(</span><span style="background-color: #fff0f0">&quot;I/O error: &quot;</span> <span style="color: #333333">+</span> ex<span style="color: #333333">.</span><span style="color: #0000CC">getMessage</span><span style="color: #333333">(),</span> <span style="color: #0000DD; font-weight: bold">5</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">20</span><span style="color: #333333">);</span> <span style="color: #888888">//Display the error message</span>
+    println<span style="color: #333333">(</span>ex<span style="color: #333333">.</span><span style="color: #0000CC">getMessage</span><span style="color: #333333">());</span> <span style="color: #888888">//Print the error message</span>
+    <span style="color: #008800; font-weight: bold">try</span><span style="color: #333333">{</span> <span style="color: #888888">//Try</span>
+      Socket socket <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> Socket<span style="color: #333333">(</span>hostname<span style="color: #333333">,</span> port<span style="color: #333333">);</span> <span style="color: #888888">//Connect to the socket</span>
+      InputStream input <span style="color: #333333">=</span> socket<span style="color: #333333">.</span><span style="color: #0000CC">getInputStream</span><span style="color: #333333">();</span> <span style="color: #888888">//Create the input stream to read incoming data</span>
+      OutputStream output <span style="color: #333333">=</span> socket<span style="color: #333333">.</span><span style="color: #0000CC">getOutputStream</span><span style="color: #333333">();</span> <span style="color: #888888">//Create the output stream to write outgoing data</span>
+      reader <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> InputStreamReader<span style="color: #333333">(</span>input<span style="color: #333333">);</span> <span style="color: #888888">//Attach the reader to the input stream</span>
+      writer <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> PrintWriter<span style="color: #333333">(</span>output<span style="color: #333333">,</span> <span style="color: #008800; font-weight: bold">true</span><span style="color: #333333">);</span> <span style="color: #888888">//Attach the writer to the output stream</span>
+    <span style="color: #333333">}</span>
+    <span style="color: #008800; font-weight: bold">catch</span> <span style="color: #333333">(</span>Exception ex1<span style="color: #333333">)</span> <span style="color: #333333">{</span> <span style="color: #888888">//Catch</span>
+    <span style="color: #333333">}</span>
+  <span style="color: #333333">}</span>
+  <span style="color: #008800; font-weight: bold">if</span><span style="color: #333333">(!</span>commLock<span style="color: #333333">){</span> <span style="color: #888888">//If the command has not been locked</span>
+    command <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;STOP&quot;</span><span style="color: #333333">;</span> <span style="color: #888888">//Make the default command &quot;&quot;STOP</span>
+  <span style="color: #333333">}</span>
+  <span style="color: #008800; font-weight: bold">try</span><span style="color: #333333">{</span> <span style="color: #888888">//Try</span>
+    writer<span style="color: #333333">.</span><span style="color: #0000CC">println</span><span style="color: #333333">(</span>command<span style="color: #333333">);</span> <span style="color: #888888">//Send the command over to the TCP/IP socket</span>
+  <span style="color: #333333">}</span>
+  <span style="color: #008800; font-weight: bold">catch</span> <span style="color: #333333">(</span>Exception ex<span style="color: #333333">)</span> <span style="color: #333333">{</span> <span style="color: #888888">//Catch</span>
+  <span style="color: #333333">}</span>
+  <span style="color: #008800; font-weight: bold">for</span><span style="color: #333333">(</span>Button <span style="color: #997700; font-weight: bold">b:</span> buttons<span style="color: #333333">){</span> <span style="color: #888888">//For all the buttons</span>
+    b<span style="color: #333333">.</span><span style="color: #0000CC">drawButton</span><span style="color: #333333">();</span> <span style="color: #888888">//Draw the button</span>
+  <span style="color: #333333">}</span>
+<span style="color: #333333">}</span>
+
+<span style="color: #333399; font-weight: bold">int</span> <span style="color: #0066BB; font-weight: bold">myConstrain</span><span style="color: #333333">(</span><span style="color: #333399; font-weight: bold">int</span> val<span style="color: #333333">,</span> <span style="color: #333399; font-weight: bold">int</span> minVal<span style="color: #333333">,</span> <span style="color: #333399; font-weight: bold">int</span> maxVal<span style="color: #333333">){</span> <span style="color: #888888">//Constraint function</span>
+  <span style="color: #008800; font-weight: bold">return</span> <span style="color: #0066BB; font-weight: bold">min</span><span style="color: #333333">(</span>maxVal<span style="color: #333333">,</span> max<span style="color: #333333">(</span>minVal<span style="color: #333333">,</span> val<span style="color: #333333">));</span>
+<span style="color: #333333">}</span>
+</pre></div>
+
+<h5 style="text-align:justify;">Button.pde</h5>
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">Button</span><span style="color: #333333">{</span> <span style="color: #888888">//The button class</span>
+  String text<span style="color: #333333">;</span> <span style="color: #888888">//The text to be displayed</span>
+  <span style="color: #333399; font-weight: bold">int</span> x<span style="color: #333333">,</span> y<span style="color: #333333">;</span> <span style="color: #888888">//x and y coordinates of the button</span>
+  <span style="color: #333399; font-weight: bold">int</span> bLength<span style="color: #333333">,</span> bHeight<span style="color: #333333">;</span> <span style="color: #888888">//The button length and button height</span>
+  
+  Button<span style="color: #333333">(</span><span style="color: #333399; font-weight: bold">int</span> xCor<span style="color: #333333">,</span> <span style="color: #333399; font-weight: bold">int</span> yCor<span style="color: #333333">,</span> String bText<span style="color: #333333">,</span> <span style="color: #333399; font-weight: bold">int</span> bl<span style="color: #333333">,</span> <span style="color: #333399; font-weight: bold">int</span> bh<span style="color: #333333">){</span> <span style="color: #888888">//Constructor 1</span>
+    x <span style="color: #333333">=</span> xCor<span style="color: #333333">;</span>
+    y <span style="color: #333333">=</span> yCor<span style="color: #333333">;</span>
+    text <span style="color: #333333">=</span> bText<span style="color: #333333">;</span>
+    bLength <span style="color: #333333">=</span> bl<span style="color: #333333">;</span>
+    bHeight <span style="color: #333333">=</span> bh<span style="color: #333333">;</span>
+    
+  <span style="color: #333333">}</span>
+  Button<span style="color: #333333">(</span><span style="color: #333399; font-weight: bold">int</span> xCor<span style="color: #333333">,</span> <span style="color: #333399; font-weight: bold">int</span> yCor<span style="color: #333333">,</span> String bText<span style="color: #333333">){</span> <span style="color: #888888">//Constructor 2</span>
+    x <span style="color: #333333">=</span> xCor<span style="color: #333333">;</span>
+    y <span style="color: #333333">=</span> yCor<span style="color: #333333">;</span>
+    text <span style="color: #333333">=</span> bText<span style="color: #333333">;</span>
+    bLength <span style="color: #333333">=</span> buttonSize<span style="color: #333333">;</span>
+    bHeight <span style="color: #333333">=</span> buttonSize<span style="color: #333333">;</span>
+  <span style="color: #333333">}</span>
+  
+  <span style="color: #333399; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">drawButton</span><span style="color: #333333">(){</span> <span style="color: #888888">//Draw button</span>
+    fill<span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">127</span><span style="color: #333333">);</span> <span style="color: #888888">//Fill with grey</span>
+    stroke<span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">);</span> <span style="color: #888888">//Make border black</span>
+    strokeWeight<span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">3</span><span style="color: #333333">);</span> <span style="color: #888888">//Make border width 3</span>
+    rect<span style="color: #333333">(</span>x<span style="color: #333333">,</span> y<span style="color: #333333">,</span> bLength<span style="color: #333333">,</span> bHeight<span style="color: #333333">);</span> <span style="color: #888888">//Draw rectangle</span>
+    strokeWeight<span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">1</span><span style="color: #333333">);</span> <span style="color: #888888">//Make border width 1</span>
+    
+    fill<span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">);</span> <span style="color: #888888">//Fill with black</span>
+    textSize<span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">40</span><span style="color: #333333">);</span> <span style="color: #888888">//Make text size 40</span>
+    text<span style="color: #333333">(</span>text<span style="color: #333333">,</span> x <span style="color: #333333">+</span> <span style="color: #333333">(</span>bLength <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>textWidth<span style="color: #333333">(</span>text<span style="color: #333333">)</span> <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">),</span> y <span style="color: #333333">+</span> <span style="color: #333333">(</span>bHeight <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(</span>textAscent<span style="color: #333333">()</span> <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">));</span> <span style="color: #888888">//Print button text</span>
+  <span style="color: #333333">}</span>
+<span style="color: #333333">}</span>
+</pre></div>
+
+<h5 style="text-align:justify;">addButtonFunc.pde</h5>
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #333399; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">addButtons</span><span style="color: #333333">(){</span> <span style="color: #888888">//The function to add buttons</span>
+  buttons<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">new</span> Button<span style="color: #333333">((</span>width <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">4</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">4</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>buttonSize <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">),</span> <span style="color: #0000DD; font-weight: bold">650</span><span style="color: #333333">,</span> <span style="background-color: #fff0f0">&quot;UP&quot;</span><span style="color: #333333">));</span>
+  buttons<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">new</span> Button<span style="color: #333333">((</span>width <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">4</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">4</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>buttonSize <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">),</span> <span style="color: #0000DD; font-weight: bold">850</span><span style="color: #333333">,</span> <span style="background-color: #fff0f0">&quot;DOWN&quot;</span><span style="color: #333333">));</span>
+  buttons<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">new</span> Button<span style="color: #333333">((</span>width <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">15</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(((</span>width <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">))</span> <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">4</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>buttonSize <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">),</span> <span style="color: #0000DD; font-weight: bold">850</span><span style="color: #333333">,</span> <span style="background-color: #fff0f0">&quot;LEFT&quot;</span><span style="color: #333333">));</span>
+  buttons<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">new</span> Button<span style="color: #333333">((</span>width <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(((</span>width <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">))</span> <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">4</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>buttonSize <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">),</span> <span style="color: #0000DD; font-weight: bold">850</span><span style="color: #333333">,</span> <span style="background-color: #fff0f0">&quot;RIGHT&quot;</span><span style="color: #333333">));</span>
+  
+  buttons<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">new</span> Button<span style="color: #333333">((</span>width <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">4</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">4</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">3</span> <span style="color: #333333">*</span> buttonSize <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">),</span> <span style="color: #0000DD; font-weight: bold">450</span><span style="color: #333333">,</span> <span style="background-color: #fff0f0">&quot;INC&quot;</span><span style="color: #333333">));</span>
+  buttons<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">new</span> Button<span style="color: #333333">((</span>width <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">4</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">4</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(</span>buttonSize <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">),</span> <span style="color: #0000DD; font-weight: bold">450</span><span style="color: #333333">,</span> <span style="background-color: #fff0f0">&quot;DEC&quot;</span><span style="color: #333333">));</span>
+  
+  buttons<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">new</span> Button<span style="color: #333333">((</span>width <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">15</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(((</span>width <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">))</span> <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">4</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>buttonSize <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">),</span> <span style="color: #0000DD; font-weight: bold">50</span><span style="color: #333333">,</span> <span style="background-color: #fff0f0">&quot;HELP&quot;</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">2</span> <span style="color: #333333">*</span> buttonSize <span style="color: #333333">+</span> <span style="color: #333333">(</span>buttonSize <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">5</span><span style="color: #333333">),</span> buttonSize<span style="color: #333333">));</span>
+  buttons<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">new</span> Button<span style="color: #333333">((</span>width <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">15</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(((</span>width <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">))</span> <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">4</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>buttonSize <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">),</span> <span style="color: #0000DD; font-weight: bold">250</span><span style="color: #333333">,</span> <span style="background-color: #fff0f0">&quot;RECORD&quot;</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">2</span> <span style="color: #333333">*</span> buttonSize <span style="color: #333333">+</span> <span style="color: #333333">(</span>buttonSize <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">5</span><span style="color: #333333">),</span> buttonSize<span style="color: #333333">));</span>
+  buttons<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">new</span> Button<span style="color: #333333">((</span>width <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">15</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(((</span>width <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">))</span> <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">4</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>buttonSize <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">),</span> <span style="color: #0000DD; font-weight: bold">450</span><span style="color: #333333">,</span> <span style="background-color: #fff0f0">&quot;PLAY&quot;</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">2</span> <span style="color: #333333">*</span> buttonSize <span style="color: #333333">+</span> <span style="color: #333333">(</span>buttonSize <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">5</span><span style="color: #333333">),</span> buttonSize<span style="color: #333333">));</span>
+  buttons<span style="color: #333333">.</span><span style="color: #0000CC">add</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">new</span> Button<span style="color: #333333">((</span>width <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">15</span><span style="color: #333333">)</span> <span style="color: #333333">+</span> <span style="color: #333333">(((</span>width <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>height <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">))</span> <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">4</span><span style="color: #333333">)</span> <span style="color: #333333">-</span> <span style="color: #333333">(</span>buttonSize <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span><span style="color: #333333">),</span> <span style="color: #0000DD; font-weight: bold">650</span><span style="color: #333333">,</span> <span style="background-color: #fff0f0">&quot;MAP&quot;</span><span style="color: #333333">,</span> <span style="color: #0000DD; font-weight: bold">2</span> <span style="color: #333333">*</span> buttonSize <span style="color: #333333">+</span> <span style="color: #333333">(</span>buttonSize <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">5</span><span style="color: #333333">),</span> buttonSize<span style="color: #333333">));</span>
+<span style="color: #333333">}</span>
+</pre></div>
+
+<h5 style="text-align:justify;">mouseFunc.pde</h5>
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #333399; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">mousePressed</span><span style="color: #333333">(){</span> <span style="color: #888888">//The mouse pressed function</span>
+  <span style="color: #008800; font-weight: bold">for</span><span style="color: #333333">(</span>Button <span style="color: #997700; font-weight: bold">b:</span> buttons<span style="color: #333333">){</span> <span style="color: #888888">//For all buttons</span>
+    <span style="color: #008800; font-weight: bold">if</span><span style="color: #333333">(</span>mouseX <span style="color: #333333">&gt;</span> b<span style="color: #333333">.</span><span style="color: #0000CC">x</span> <span style="color: #333333">&amp;&amp;</span> mouseX <span style="color: #333333">&lt;</span> b<span style="color: #333333">.</span><span style="color: #0000CC">x</span> <span style="color: #333333">+</span> b<span style="color: #333333">.</span><span style="color: #0000CC">bLength</span> <span style="color: #333333">&amp;&amp;</span> mouseY <span style="color: #333333">&gt;</span> b<span style="color: #333333">.</span><span style="color: #0000CC">y</span> <span style="color: #333333">&amp;&amp;</span> mouseY <span style="color: #333333">&lt;</span> b<span style="color: #333333">.</span><span style="color: #0000CC">y</span> <span style="color: #333333">+</span> b<span style="color: #333333">.</span><span style="color: #0000CC">bHeight</span><span style="color: #333333">){</span> <span style="color: #888888">//If this pressed</span>
+      commLock <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">true</span><span style="color: #333333">;</span> <span style="color: #888888">//Lock the command flag</span>
+      command <span style="color: #333333">=</span> b<span style="color: #333333">.</span><span style="color: #0000CC">text</span><span style="color: #333333">;</span> <span style="color: #888888">//Change the command to button</span>
+      <span style="color: #008800; font-weight: bold">break</span><span style="color: #333333">;</span> <span style="color: #888888">//Break out of the loop</span>
+    <span style="color: #333333">}</span>
+  <span style="color: #333333">}</span>
+<span style="color: #333333">}</span>
+
+<span style="color: #333399; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">mouseReleased</span><span style="color: #333333">(){</span> <span style="color: #888888">//The mouse released function</span>
+  commLock <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">false</span><span style="color: #333333">;</span> <span style="color: #888888">//Unlock the command flag</span>
+<span style="color: #333333">}</span>
+</pre></div>
+
       </div>
 
     </div><!-- /.container -->
