@@ -112,6 +112,7 @@
 
       <div style="text-align:center;">
               <h2>Hardware Design</h2>
+			  <p style="text-align: justify;padding: 0px 30px;">The diagram below shows the wiring of our system. We used both 5V and 3.3V to power sensors depending on their operating voltage. For the sensor that is taking 5V, we use resistors to divide its output voltage to protect the GPIO pins on Raspberry Pi.</p>
 			  <div style="text-align:center;">
 				  <img class="img-rounded" src="pics/PiWithSensors.png" alt="Generic placeholder image" style="width:50%;">
 				  <h5>Circuit connection of all the components</h5>
@@ -160,6 +161,11 @@
 				  <img class="img-rounded" src="pics/ultrasonicSensor.png" alt="Generic placeholder image" style="width:20%;">
 				  <h5>The Ultrasonic Sensor</h5>
 				</div>
+				<p style="text-align: justify;padding: 0px 30px;">Moreover, we modularized the voltage divider part of our ultrasonic sensor and used a protoboard to provide both mechanical and electrical connections with the breadboard.</p>
+				<div style="text-align:center;">
+				  <img class="img-rounded" src="pics/ultrasonicMount.png" alt="Generic placeholder image" style="width:20%;">
+				  <h5>The Modularized Ultrasonic Sensor</h5>
+				</div>
 			  </ol>
 			  
 			  <h4 style="text-align: justify;padding: 0px 30px;">The Speaker</h4>
@@ -192,16 +198,39 @@
 					<li style="text-align: justify;">The ultrasonic data</li>
 				</ul>
 			  </ul>
+			  
+			  <br>
+			  
+			  <h4 style="text-align: justify;padding: 0px 30px;">The Python Program</h4>
 			  <p style="text-align: justify;padding: 0px 30px;">All these different data values are semi-colon (";") delimited and the values in the same data array are comma (",") delimited. All these data points are appended in a single string. The string is then encoded and sent over the TCP/IP socket. After sending the data, the server then waits for the commands from the client in a blocking manner. Once a string is received, the server decodes the string and changes the functions as per the received command.</p>
 			  <div style="text-align:center;">
 				  <img class="img-rounded" src="pics/pythonFlow.png" alt="Generic placeholder image" style="width:100%;">
 				  <h5>The Flow Diagram for the Python Program</h5>
 			  </div>
+			  
+			  <h5 style="text-align: justify;padding: 0px 30px;">The Ultrasonic Sensor</h5>	  
+			  <p style="text-align: justify;padding: 0px 30px;">Ultrasonics sensor uses the time of flight of sound to measure distance. We sent a 0.01 millisecond pulse to the trigger pin of the ultrasonic sensor and took input from the echo pin. Then used the time difference between the trig output and echo input to calculate the distance traveled of the sound back and forth from the detected object and divided that by two. Then we simply used the expression: $$distance = speed \times time$$</p>
+			  <div style="text-align:center;">
+				  <img class="img-rounded" src="pics/ultrasonicTiming.png" alt="Generic placeholder image" style="width:40%;">
+				  <h5>The Timing Diagram for the Ultrasonic Sensor</h5>
+			  </div>
+			  
+			  <h5 style="text-align: justify;padding: 0px 30px;">The ADC</h5>	  
+			  <p style="text-align: justify;padding: 0px 30px;">We used a MCP3008 to do the analog to digital conversion. It is an 8-channel, 10-bit analog to digital converter. ‘8 channel’ means that it can accept up to 8 different analog voltages. The 10-bit property is the resolution of the ADC, or the precision to which it can measure a voltage. Since the SPI library is broken, we had to implement it from scratch using bitbanging.</p>
+			  <div style="text-align:center;">
+				  <img class="img-rounded" src="pics/adcTiming.png" alt="Generic placeholder image" style="width:50%;">
+				  <h5>The Timing Diagram for the ADC</h5>
+			  </div>
+			  
+			  <br>
+			  
+			  <h4 style="text-align: justify;padding: 0px 30px;">The Android Application</h4>
 			  <p style="text-align: justify;padding: 0px 30px;">The Android application works in a similar fashion. When the client starts, it searches for the server with given credentials. Once it is connected to the server, it waits for data to be received in a blocking manner. Once the data is received, the client decodes the data, splits it into IR camera feed and sensor values and updates the values on the screen. Once the screen has been updated, the client checks for button presses. If a button has been pressed, the client encodes the associated command and sends it over to the server. Otherwise, it encodes the stop command and send the command over to the said server.</p>
 			  <div style="text-align:center;">
 				  <img class="img-rounded" src="pics/javaFlow.png" alt="Generic placeholder image" style="width:100%;">
 				  <h5>The Flow Diagram for the Android Application</h5>
 			  </div>
+			  
 			  <p style="text-align: justify;padding: 0px 30px;">The Android application has a very minimalistic design. It shows the IR camera feed in the center with a data display panel. This panel is used to view the data received from all the sensors. It also has 10 buttons:</p>
 			  <ul>
 				<li style="text-align: justify;">UP: Pressing the UP button moves the robot forward.</li>
