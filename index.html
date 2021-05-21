@@ -98,7 +98,7 @@
           </div>
           <div class="col-md-8" style="font-size:18px;">
           <h2>Project Objective:</h2>
-          <p style="text-align: justify;padding: 0px 30px;"> Building a Raspberry Pi</p>
+          <p style="text-align: justify;padding: 0px 30px;"> Building a Raspberry Pi 4 based system with the following functions</p>
           <ul>
 			<li>Establish a reliable half-duplex connection between the robot and the control device.</li>
 			<li>Fetch and display live IR camera feed along with sensor data on the display device.</li>
@@ -117,7 +117,7 @@
 				  <h5>Circuit connection of all the components</h5>
 			  </div>
               <h4 style="text-align: justify;padding: 0px 30px;">Infrared Thermal Camera</h4>
-			  <p style="text-align: justify;padding: 0px 30px;">In order to get a live feed of our surroundings, we used the Adafruit AMG8833 IR Thermal Camera. This camera module has 12 pins, out of which we only used 4. In order to get data from the camera, we used the I2C communication protocol. We also needed to install the "adafruit_amg88xx" library in order to use the module. Once running, the module returns an array of 64 individual infrared temperature readings over I2C. This module can measure temperatures ranging from 0°C to 80°C with an accuracy of +- 2.5°C making it ideal for our application. It can also detect a human from a distance of up to 7 meters. In order to get an image from the 8x8 array, we used image processing using the SciPy python library in order to interpolate the 8x8 grid.</p>
+			  <p style="text-align: justify;padding: 0px 30px;">In order to get a live feed of our surroundings, we used the Adafruit AMG8833 IR Thermal Camera. This camera module has 12 pins, out of which we only used 4. In order to get data from the camera, we used the I2C communication protocol. We also needed to install the "adafruit_amg88xx" library in order to use the module. Once running, the module returns an array of 64 individual infrared temperature readings over I2C. This module can measure temperatures ranging from 0°C to 80°C with an accuracy of +- 2.5°C making it ideal for our application. It can also detect a human from a distance of up to 7 meters. In order to get an image from the 8x8 array, we used image processing using the SciPy python library in order to interpolate the 8x8 grid. We used Fusion 360 to CAD an owl shape mounting mechanical to mount the IR camera securely and enhance the aesthetic of the robot.   </p>
 			  <div style="text-align:center;">
 				  <img class="img-rounded" src="pics/IRCamera.jpg" alt="Generic placeholder image" style="width:30%;">
 				  <h5>The IR Thermal Camera</h5>
@@ -240,11 +240,7 @@
 				  <img class="img-rounded" src="pics/waterTest.png" alt="Generic placeholder image" style="width:70%;">
 				  <h5>Testing of the Water Sensor</h5>
 				</div>
-				<li style="text-align: justify;">Radiation test: In order to test the radiation, we used the piezo-electric barbeque lighter to create large voltage discharges. However, an issue with this test was that the dischage not only toggled the radiation flag, but also the fire and water sensor flag. In order to overcome this issue, we simply toggled the fire and water sensor back in the radiation detection callback.</li>
-				<div style="text-align:center;">
-				  <img class="img-rounded" src="pics/radiationTest.png" alt="Generic placeholder image" style="width:70%;">
-				  <h5>Testing of the Radiation Sensor</h5>
-				</div>
+				<li style="text-align: justify;">Radiation test: In order to test the radiation, we used the piezo-electric barbeque lighter. Hello</li>
 				<li style="text-align: justify;">DEC: Pressing the DEC button reduces the robot move speed.</li>
 				<li style="text-align: justify;">HELP: Pressing the HELP button plays a pre-recorded message.</li>
 				<li style="text-align: justify;">RECORD: Pressing the RECORD button prompts the person being rescued to record their message.</li>
