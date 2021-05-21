@@ -117,10 +117,16 @@
 				  <h5>Circuit connection of all the components</h5>
 			  </div>
               <h4 style="text-align: justify;padding: 0px 30px;">Infrared Thermal Camera</h4>
-			  <p style="text-align: justify;padding: 0px 30px;">In order to get a live feed of our surroundings, we used the Adafruit AMG8833 IR Thermal Camera. This camera module has 12 pins, out of which we only used 4. In order to get data from the camera, we used the I2C communication protocol. We also needed to install the "adafruit_amg88xx" library in order to use the module. Once running, the module returns an array of 64 individual infrared temperature readings over I2C. This module can measure temperatures ranging from 0°C to 80°C with an accuracy of +- 2.5°C making it ideal for our application. It can also detect a human from a distance of up to 7 meters. In order to get an image from the 8x8 array, we used image processing using the SciPy python library in order to interpolate the 8x8 grid. We used Fusion 360 to CAD an owl shape mounting mechanical to mount the IR camera securely and enhance the aesthetic of the robot.   </p>
+			  <p style="text-align: justify;padding: 0px 30px;">In order to get a live feed of our surroundings, we used the Adafruit AMG8833 IR Thermal Camera. This camera module has 12 pins, out of which we only used 4. In order to get data from the camera, we used the I2C communication protocol. We also needed to install the "adafruit_amg88xx" library in order to use the module. Once running, the module returns an array of 64 individual infrared temperature readings over I2C. This module can measure temperatures ranging from 0°C to 80°C with an accuracy of +- 2.5°C making it ideal for our application. It can also detect a human from a distance of up to 7 meters. In order to get an image from the 8x8 array, we used image processing using the SciPy python library in order to interpolate the 8x8 grid. We used Fusion 360 to CAD an owl shape mounting mechanical to mount the IR camera securely and enhance the aesthetic of the robot.</p>
 			  <div style="text-align:center;">
 				  <img class="img-rounded" src="pics/IRCamera.jpg" alt="Generic placeholder image" style="width:30%;">
 				  <h5>The IR Thermal Camera</h5>
+			  </div>
+			  
+			  <p style="text-align: justify;padding: 0px 30px;">We used Fusion 360 to CAD an owl shape mechanical mount and 3D printed it to mount the IR camera securely and enhance the aesthetic of the robot.</p>
+			  <div style="text-align:center;">
+				  <img class="img-rounded" src="pics/IRMount.png" alt="Generic placeholder image" style="width:50%;">
+				  <h5>The IR Camera Mount</h5>
 			  </div>
 			  
 			  <br>
