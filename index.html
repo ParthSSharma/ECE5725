@@ -141,7 +141,7 @@
 				<li style="text-align: justify;">The radiation sensor: In order to utilize the above phenomenon, we added a long wire connected to a free GPIO pin. This wire acts as an antenna and can detect such bursts of radiation. In order to test our hypothesis, we hooked up the wire to an oscilloscope and tested the result. We found out that it does in fact detect EM discharges.</li>
 				<div style="text-align:center;">
 				  <img class="img-rounded" src="pics/radiationSensor.png" alt="Generic placeholder image" style="width:50%;">
-				  <h5>The Water Sensor</h5>
+				  <h5>Radiation Output on the Oscilloscope</h5>
 				</div>
 				<li style="text-align: justify;">The temperature sensor: In order to get a measurement of the temperature, we used the LM393 temperature sensor. This sensor gives out a raw ADC value which needs to be converted into the corrosponding temperature value using the expression: $$temperature = 10 * log_{10}(10000 * (\frac{3.3 * 1024}{adc} - 1)) - 10$$</li>
 				<div style="text-align:center;">
@@ -188,12 +188,29 @@
 			  <p style="text-align: justify;padding: 0px 30px;">All these different data values are semi-colon (";") delimited and the values in the same data array are comma (",") delimited. All these data points are appended in a single string. The string is then encoded and sent over the TCP/IP socket. After sending the data, the server then waits for the commands from the client in a blocking manner. Once a string is received, the server decodes the string and changes the functions as per the received command.</p>
 			  <div style="text-align:center;">
 				  <img class="img-rounded" src="pics/pythonFlow.png" alt="Generic placeholder image" style="width:100%;">
-				  <h5>The flow diagram for the Python program</h5>
+				  <h5>The Flow Diagram for the Python Program</h5>
 			  </div>
 			  <p style="text-align: justify;padding: 0px 30px;">The Android application works in a similar fashion. When the client starts, it searches for the server with given credentials. Once it is connected to the server, it waits for data to be received in a blocking manner. Once the data is received, the client decodes the data, splits it into IR camera feed and sensor values and updates the values on the screen. Once the screen has been updated, the client checks for button presses. If a button has been pressed, the client encodes the associated command and sends it over to the server. Otherwise, it encodes the stop command and send the command over to the said server.</p>
 			  <div style="text-align:center;">
 				  <img class="img-rounded" src="pics/javaFlow.png" alt="Generic placeholder image" style="width:100%;">
-				  <h5>The flow diagram for Android application</h5>
+				  <h5>The Flow Diagram for the Android Application</h5>
+			  </div>
+			  <p style="text-align: justify;padding: 0px 30px;">The Android application has a very minimalistic design. It shows the IR camera feed in the center with a data display panel. This panel is used to view the data received from all the sensors. It also has 10 buttons:</p>
+			  <ul>
+				<li style="text-align: justify;">UP: Pressing the UP button moves the robot forward.</li>
+				<li style="text-align: justify;">DOWN: Pressing the DOWN button moves the robot backwards.</li>
+				<li style="text-align: justify;">LEFT: Pressing the LEFT button rotates the robot in the counter-clockwise direction.</li>
+				<li style="text-align: justify;">RIGHT: Pressing the RIGHT button rotates the robot in the clockwise direction.</li>
+				<li style="text-align: justify;">INC: Pressing the INC button increases the robot move speed.</li>
+				<li style="text-align: justify;">DEC: Pressing the DEC button reduces the robot move speed.</li>
+				<li style="text-align: justify;">HELP: Pressing the HELP button plays a pre-recorded message.</li>
+				<li style="text-align: justify;">RECORD: Pressing the RECORD button prompts the person being rescued to record their message.</li>
+				<li style="text-align: justify;">PLAY: Pressing the PLAY button plays the sound recorded by the person being rescued.</li>
+				<li style="text-align: justify;">MAP: Pressing the MAP button creates a map of the surrounding area.</li>
+			  </ul>
+			  <div style="text-align:center;">
+				  <img class="img-rounded" src="pics/androidApp.png" alt="Generic placeholder image" style="width:70%;">
+				  <h5>The Android Application</h5>
 			  </div>
 			  <p style="text-align: justify;padding: 0px 30px;">The biggest challenge while implementing the said algorithm was that the Wi-Fi router at our apartment was blocking the TCP/IP packets and therefore, wasn't allowing the connection between the server and the client to be established. In order to tackle this problem, we simply connected the RaspberryPi and the Android device to Cornell's open "RedRover". This allowed us to implement the system quite effectively.</p>
 			  <p style="text-align: justify;padding: 0px 30px;">Another challenge we faced on the software side was that connecting to RedRover didn't allow us to update our kernel or install any new package. The reason behind this is that RedRover needs the users to login using Cornell NetID. Once logged in, we were able to use it like any other network.</p>
