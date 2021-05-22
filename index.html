@@ -240,7 +240,7 @@
 			  <br>
 			  
 			  <h4 style="text-align: justify;padding: 0px 30px;">The Android Application</h4>
-			  <p style="text-align: justify;padding: 0px 30px;">The Android application works in a similar fashion. When the client starts, it searches for the server with given credentials. Once it is connected to the server, it waits for data to be received in a blocking manner. Once the data is received, the client decodes the data, splits it into IR camera feed and sensor values and updates the values on the screen. Once the screen has been updated, the client checks for button presses. If a button has been pressed, the client encodes the associated command and sends it over to the server. Otherwise, it encodes the stop command and send the command over to the said server.</p>
+			  <p style="text-align: justify;padding: 0px 30px;">The Android application works similarly. When the client starts, it searches for the server with the given credentials. Once it is connected to the server, it waits for data to be received in a blocking manner. Once the data is received, the client decodes the data, splits it into IR camera feed and sensor values, and updates the values on the screen. Once the screen has been updated, the client checks for button presses. If a button has been pressed, the client encodes the associated command and sends it over to the server. Otherwise, it encodes the stop command and sends the command over to the said server.</p>
 			  <div style="text-align:center;">
 				  <img class="img-rounded" src="pics/javaFlow.png" alt="Generic placeholder image" style="width:100%;">
 				  <h5>The Flow Diagram for the Android Application</h5>
@@ -281,7 +281,7 @@
 			  
               <p style="text-align: justify;padding: 0px 30px;">In order to see how well the system works, we tested each and every component quite extensively. We carried out the following tests:</p>
 			  <ul>
-				<li style="text-align: justify;">User control test: As a first step towards testing, we turned the power on and started the program. Then we tested out all the motion control buttons and verified that all the buttons are functioning as they should. We found out that there was a bit of latency bacause of large data packets being transmitted, but the robot was responding as it should.</li>
+				<li style="text-align: justify;">User control test: As the first step towards testing, we turned the power on and started the program. Then we tested out all the motion control buttons and verified that all the buttons are functioning as they should. We found out that there was a bit of latency because of large data packets being transmitted, but the robot was responding as it should.</li>
 				<li style="text-align: justify;">Ultrasonic test: Next, we began testing the ultrasonic sensor to test the accuracy in the measurement of distance. Moreover, as a security feature, we also tested if the robot stops moving forward when the distance between an obstacle and the robot is less than a certain threshold value (15 cms in this case). The test revealed that the distance is accurate within 1 cm for a range of 4 cm to 200 cm. The distance is unmeasurable below 4 cm and the accuracy falls rapidly beyond 200 cm. Moreover, the robot does stop automatically and does not move forward when the distance goes below the set threshold.</li>
 				<div style="text-align:center;">
 				  <img class="img-rounded" src="pics/distanceTest.png" alt="Generic placeholder image" style="width:70%;">
@@ -297,7 +297,7 @@
 				  <img class="img-rounded" src="pics/waterTest.png" alt="Generic placeholder image" style="width:70%;">
 				  <h5>Testing of the Water Sensor</h5>
 				</div>
-				<li style="text-align: justify;">Radiation test: In order to test the radiation, we used the piezo-electric barbeque lighter to generate a large voltage discharge. We found out that it was toggling the radiation flag quite effectively. However, there was an issue that it was also toggling the flame and water sensor flags. To avoid this, we simply toggled those flags back in the radiation sensor callback and it worked like a charm.</li>
+				<li style="text-align: justify;">Radiation test: In order to test the radiation, we used the piezo-electric barbeque lighter to generate a large voltage discharge. We found out that it was toggling the radiation flag quite effectively. However, it was also mistakenly toggling the flame and water sensor flags. To avoid this, we simply toggled those flags back in the radiation sensor callback and it worked like a charm.</li>
 				<div style="text-align:center;">
 				  <img class="img-rounded" src="pics/radiationTest.png" alt="Generic placeholder image" style="width:70%;">
 				  <h5>Testing of the Radiation Sensor</h5>
@@ -307,7 +307,7 @@
 				  <img class="img-rounded" src="pics/mappingTest.png" alt="Generic placeholder image" style="width:50%;">
 				  <h5>Running the Map Test</h5>
 				</div>
-				<li style="text-align: justify;">Audio test: In order to test the audio output and input, we connected the bluetooth speaker to the RaspberryPi and played the audio files. We also tested the microphone input by recording the audio messages and playing them back. The audio recordings were quite legible.</li>
+				<li style="text-align: justify;">Audio test: In order to test the audio output and input, we connected the Bluetooth speaker to the RaspberryPi and played the audio files. We also tested the microphone input by recording the audio messages and playing them back. The audio recordings were quite legible.</li>
 			  </ul>
       </div>
 
@@ -315,7 +315,7 @@
 
       <div style="text-align:center;">
               <h2>Result</h2>
-              <p style="text-align: justify;padding: 0px 30px;">The project progressed mostly as we planned. We were able to implement all the sensors and features that we planned for. Moreover, we were also able to stay on track and save enough time to implement the mapping feature. We were able to develop the data packet structure to send data from server to client and get a response in return. Although there were a few hiccups like a few broken libraries and connection issues due to router blocking our TCP/IP packets, we were able to figure out the workarounds and stay on track in order to finish the project on time. We also managed to implement the mapping function which was very difficult to get right.</p>
+              <p style="text-align: justify;padding: 0px 30px;">The project progressed mostly as we planned. We were able to implement all the sensors and features that we planned for. Moreover, we were also able to stay on track and save enough time to implement the mapping feature. We were able to develop the data packet structure to send data from server to client and get a response in return. Although there were a few hiccups like a few broken libraries and connection issues due to the router blocking our TCP/IP packets, we were able to figure out the workarounds and stay on track in order to finish the project on time. We also managed to implement the mapping function which was very difficult to get right.</p>
       </div>
 	  
 	<hr id='conclusion'>
@@ -334,8 +334,8 @@
 			  <ul>
 				<li style="text-align: justify;">With the 8 channel ADC converter, we can include more analog sensors that tell us more information about the environment. For example, we can add photo-resistors, humidity sensor, and motion detector.</li>
 				<li style="text-align: justify;">As mentioned above, Raspberry Pi is not ideal for directly interfacing with sensors, so using a microcontroller as a data acquisition board and communicating sensor readings with the Pi may be a more optimal and professional solution.</li>
-				<li style="text-align: justify;">We can enhance mapping if we use a GPS or IMU to collect information and then use an Extended Kalman Filter to perform localization for the robot. In this way, we can create a much larger map. To map with higher precision, we can use the Intel real sense depth sensor that provides 9 depth measurement from 9 different angles at each time interval.</li>
-				<li style="text-align: justify;">We can also implement a feedback mechanism from the motors to have a measure of how much each motor has turned in order to have precise movements.</li>
+				<li style="text-align: justify;">We can enhance mapping if we use a GPS or IMU to collect information and then use an Extended Kalman Filter to perform localization for the robot. In this way, we can create a much larger map. To map with higher precision, we can use the Intel real sense depth sensor that provides 9 depth measurements from 9 different angles at each time interval.</li>
+				<li style="text-align: justify;">We can also implement a feedback mechanism for each motor so that they are closed-loop controlled. To implement that, we can connect an encoder on the motor shaft and then tuned it with a control algorithm such as PID. A closed-loop controlled motor moves more gradually and will allow sensors to collect more accurate data.</li>
 			  </ul>
       </div>
 	
@@ -364,13 +364,13 @@
               <h5>Project group picture</h5>
           </div>
           <div class="col-md-6" style="font-size:16px">
-              <img class="img-rounded" src="pics/a.png" alt="Generic placeholder image" width="240" height="240">
+              <img class="img-rounded" src="pics/robby.JPG" alt="Generic placeholder image" width="240" height="240">
               <h3>Robby Huang</h3>
               <p class="lead">lh479@cornell.edu</p>
-              <p>Handled hardware assembly, 3D printing and individual sensor testing and voice communication.
+              <p>Handled hardware assembly, 3D printing, mapping, individual sensor testing and voice communication.
           </div>
           <div class="col-md-6" style="font-size:16px">
-              <img class="img-rounded" src="pics/b.png" alt="Generic placeholder image" width="240" height="240">
+              <img class="img-rounded" src="pics/parth.JPG" alt="Generic placeholder image" width="240" height="240">
               <h3>Parth Sarthi Sharma</h3>
               <p class="lead">pss242@cornell.edu</p>
               <p>Handled TCP/IP communication, integration of sensors, motor control and android app development.
