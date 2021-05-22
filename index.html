@@ -90,7 +90,7 @@
 
       <div style="text-align:center;">
               <h2>Project Objective</h2>
-              <p style="text-align: justify;padding: 0px 30px;">In incidents such as gas leakage, nuclear explosion, or any environment that has potential threats to the life of the rescuer, a Rescue Bot can play an important role in searching for survivors and studying the hazardous conditions. Rescue Bot is a robot that allows the rescuer to detect and communicate with the survivor in an environment that is not yet suitable for in-person rescue.</p>
+              <p style="text-align: justify;padding: 0px 30px;">In incidents such as gas leakage, nuclear explosion, or any environment that has potential threats to the life of the rescuer, a Scouting Owl can play an important role in searching for survivors and studying the hazardous conditions. Scouting Owl is a robot that allows the rescuer to detect and communicate with the survivor in an environment that is not yet suitable for in-person rescue.</p>
       </div>
 
     <hr id='intro'>
@@ -121,7 +121,7 @@
 				  <h5>Circuit connection of all the components</h5>
 			  </div>
               <h4 style="text-align: justify;padding: 0px 30px;">Infrared Thermal Camera</h4>
-			  <p style="text-align: justify;padding: 0px 30px;">In order to get a live feed of our surroundings, we used the Adafruit AMG8833 IR Thermal Camera. This camera module has 12 pins, out of which we only used 4. In order to get data from the camera, we used the I2C communication protocol. We also needed to install the "adafruit_amg88xx" library in order to use the module. Once running, the module returns an array of 64 individual infrared temperature readings over I2C. This module can measure temperatures ranging from 0°C to 80°C with an accuracy of +- 2.5°C making it ideal for our application. It can also detect a human from a distance of up to 7 meters. In order to get an image from the 8x8 array, we used image processing using the SciPy python library in order to interpolate the 8x8 grid. We used Fusion 360 to CAD an owl shape mounting mechanical to mount the IR camera securely and enhance the aesthetic of the robot.</p>
+			  <p style="text-align: justify;padding: 0px 30px;">To get a live feed of our surroundings, we used the Adafruit AMG8833 IR Thermal Camera. This camera module has 12 pins, out of which we only used 4. To get data from the camera, we used the I2C communication protocol. We also needed to install the "adafruit_amg88xx" library to use the module. Once running, the module returns an array of 64 individual infrared temperature readings over I2C. This module can measure temperatures ranging from 0°C to 80°C with an accuracy of +- 2.5°C making it ideal for our application. It can also detect a human from a distance of up to 7 meters. In order to get an image from the 8x8 array, we used image processing using the SciPy python library to interpolate the 8x8 grid. We used Fusion 360 to CAD an owl shape mounting mechanical to mount the IR camera securely and enhance the aesthetic of the robot.</p>
 			  <div style="text-align:center;">
 				  <img class="img-rounded" src="pics/IRCamera.jpg" alt="Generic placeholder image" style="width:30%;">
 				  <h5>The IR Thermal Camera</h5>
@@ -138,23 +138,23 @@
 			  <h4 style="text-align: justify;padding: 0px 30px;">Implementing Sensors</h4>
 			  <p style="text-align: justify;padding: 0px 30px;">Along with the IR camera, our rescue robot is equipped with the following sensors:</p>
 			  <ol>
-				<li style="text-align: justify;">The flame sensor: We used the flame sensor in order to see if there is any fire nearby. If so, the rescuers are alerted about it on the display device. This sensor gives out a digital output corrosponding to whether fire is present or not. In order to receive the output, we used an edge triggered callback function because it saves precious CPU cycles.</li>
+				<li style="text-align: justify;">The flame sensor: We used the flame sensor to see if there is any fire nearby. If so, the rescuers are alerted about it on the display device. This sensor gives out a digital output corresponding to whether a fire is present or not. In order to receive the output, we used an edge-triggered callback function because it saves precious CPU cycles.</li>
 				<div style="text-align:center;">
 				  <img class="img-rounded" src="pics/flameSensor.jpg" alt="Generic placeholder image" style="width:20%;">
 				  <h5>The Flame Sensor</h5>
 				</div>
-				<li style="text-align: justify;">The water sensor: We used the water sensor in order to see the presense of water. Since our robot is an electronic device, it is prone to short-circuits when it comes in contact with water. Similar to the flame sensor, this sensor gives out a digital output corrosponding to whether water is present or not. In order to receive the output, we used an edge triggered callback function because it saves precious CPU cycles.</li>
+				<li style="text-align: justify;">The water sensor: We used the water sensor to see the presence of water. Since our robot is an electronic device, it is prone to short circuits when it comes in contact with water. Similar to the flame sensor, this sensor gives out a digital output corresponding to whether water is present or not. To receive the output, we used an edge-triggered callback function because it saves precious CPU cycles.</li>
 				<div style="text-align:center;">
 				  <img class="img-rounded" src="pics/waterSensor.jfif" alt="Generic placeholder image" style="width:20%;">
 				  <h5>The Water Sensor</h5>
 				</div>
-				<p style="text-align: justify;padding: 0px 30px;">Initially, while testing the flame sensor we were using a piezo-electric barbeque lighter. We were hoping to see the results we wanted to see. However, we found out that the lighter triggered both flame and the water sensor and all for wrong reasons. After debugging for hours, we found out that the lighter we were using generated thousands of volts for a short period of time which resulted in generation of EM waves. These waves were intercepted by the wires acting as an antenna which triggred the interrupts.</p>
-				<li style="text-align: justify;">The radiation sensor: In order to utilize the above phenomenon, we added a long wire connected to a free GPIO pin. This wire acts as an antenna and can detect such bursts of radiation. In order to test our hypothesis, we hooked up the wire to an oscilloscope and tested the result. We found out that it does in fact detect EM discharges.</li>
+				<p style="text-align: justify;padding: 0px 30px;">Initially, while testing the flame sensor we were using a piezo-electric barbeque lighter. We were hoping to see the results we wanted to see. However, we found out that the lighter triggered both flame and the water sensor and all for the wrong reasons. After debugging for hours, we found out that the lighter we were using generated thousands of volts for a short period which resulted in the generation of EM waves. These waves were intercepted by the wires acting as an antenna which triggered the interrupts.</p>
+				<li style="text-align: justify;">The radiation sensor: We added a long wire connected to a free GPIO pin to utilize the above phenomenon. This wire acts as an antenna and can detect such bursts of radiation. To test our hypothesis, we hooked up the wire to an oscilloscope and tested the result. We found out that it does detect EM discharges.</li>
 				<div style="text-align:center;">
 				  <img class="img-rounded" src="pics/radiationSensor.png" alt="Generic placeholder image" style="width:50%;">
 				  <h5>Radiation Output on the Oscilloscope</h5>
 				</div>
-				<li style="text-align: justify;">The temperature sensor: In order to get a measurement of the temperature, we used the LM393 temperature sensor. This sensor gives out a raw ADC value which needs to be converted into the corrosponding temperature value using the expression: $$temperature = 10 * log_{10}(10000 * (\frac{3.3 * 1024}{adc} - 1)) - 10$$</li>
+				<li style="text-align: justify;">The temperature sensor: In order to get a measurement of the temperature, we used the LM393 temperature sensor. This sensor gives out a raw ADC value which needs to be converted into the corresponding temperature value using the expression: $$temperature = 10 * log_{10}(10000 * (\frac{3.3 * 1024}{adc} - 1)) - 10$$</li>
 				<div style="text-align:center;">
 				  <img class="img-rounded" src="pics/temperatureSensor.jfif" alt="Generic placeholder image" style="width:20%;">
 				  <h5>The Temperature Sensor</h5>
@@ -172,7 +172,7 @@
 			  </ol>
 			  
 			  <h4 style="text-align: justify;padding: 0px 30px;">The Speaker</h4>
-			  <p style="text-align: justify;padding: 0px 30px;">In order to communicate with the person being rescued, we also added a bluetooth speaker which can be controlled directly from the Python script. In order to play and record audio, the rescuer can simply tap the corrosponding button on the screen and control the audio playback.</p>
+			  <p style="text-align: justify;padding: 0px 30px;">In order to communicate with the person being rescued, we also added a Bluetooth speaker which can be controlled directly from the Python script. To play and record audio, the rescuer can simply tap the corresponding button on the screen and control the audio playback.</p>
       </div>
 
     <hr id='softdesign'>
@@ -219,14 +219,14 @@
 			  </div>
 			  
 			  <h5 style="text-align: justify;padding: 0px 30px;">The ADC</h5>	  
-			  <p style="text-align: justify;padding: 0px 30px;">We used a MCP3008 to do the analog to digital conversion. It is an 8-channel, 10-bit analog to digital converter. ‘8 channel’ means that it can accept up to 8 different analog voltages. The 10-bit property is the resolution of the ADC, or the precision to which it can measure a voltage. Since the SPI library is broken, we had to implement it from scratch using bitbanging.</p>
+			  <p style="text-align: justify;padding: 0px 30px;">We used an MCP3008 to do the analog to digital conversion. It is an 8-channel, 10-bit analog to digital converter. ‘8 channel’ means that it can accept up to 8 different analog voltages. The 10-bit property is the resolution of the ADC, or the precision to which it can measure a voltage. Since the SPI library is broken, we had to implement it from scratch using bitbanging.</p>
 			  <div style="text-align:center;">
 				  <img class="img-rounded" src="pics/adcTiming.png" alt="Generic placeholder image" style="width:50%;">
 				  <h5>The Timing Diagram for the ADC</h5>
 			  </div>
 			  
 			  <h5 style="text-align: justify;padding: 0px 30px;">Mapping</h5>	  
-			  <p style="text-align: justify;padding: 0px 30px;">Mapping using only the ultrasonics sensor was challenging as there was no feedback to test how much the robot has moved, so we needed to approach the problem in a creative way. Since the Scouting Owl is not equipped with localization sensors (IMU or GPS), we needed to make sure we have knowledge of the robot position for every measurement data. Therefore, we made the robot turn in place for a complete circle with a fixed number of sample points so that the robot is always at (0,0) and the position can be calculated using the linspace function.</p>
+			  <p style="text-align: justify;padding: 0px 30px;">Mapping using only the ultrasonic sensor was challenging as there was no feedback to test how much the robot has moved, so we needed to approach the problem creatively. Since the Scouting Owl is not equipped with localization sensors (IMU or GPS), we needed to make sure we know the robot's position for every measurement data. Therefore, we made the robot turn in place for a complete circle with a fixed number of sample points so that the robot is always at (0,0) and the position can be calculated using the linspace function.</p>
 			  <div style="text-align:center;">
 				  <img class="img-rounded" src="pics/mapRobot.jpg" alt="Generic placeholder image" style="width:50%;">
 				  <h5>Mapping the Surrounding</h5>
